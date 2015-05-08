@@ -12,7 +12,7 @@ Schema = mongoose.Schema,
 meta_options = Schema.MetaoptionsSchema;
 
 /**
- * Document Schema
+ * Vote Schema
  */
 
 // generate _id
@@ -41,18 +41,33 @@ var VoterSchema = new Schema({
         default: '-',
         trim: true
     },
-    doc_id:{
+    vote_id:{
           type: Schema.ObjectId,
            trim: true,
-          ref: 'Document'
+          ref: 'Vote'
     },
     name: {
         type: String,
         default: '',
         trim: true
     },
+    slug: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    nom_circo: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    place_en_hemicycle:{
+        type: String,
+        default: '',
+        trim: true
+    },
     group: {
-        type: Number,
+        type: String,
         default: '',
         trim: true
     },
@@ -127,7 +142,7 @@ var VoteSchema = new Schema({
     },
     content: {
         type: String,
-        default: 'Your content..',
+        default: '-',
         trim: true
     },
     excerpt: {
@@ -144,15 +159,15 @@ var VoteSchema = new Schema({
     secret: {type:ObjectIdSchema, default: function () { return new ObjectId()} },
     thumbnail: {
         type: String,
-         default: 'http://hacktuel.fr/img/logos/loguy/hacktuel.png'
+         default: ''
     },
     lang: {
         type: String,
-        default: 'en'
+        default: 'fr'
     },
     lang_versions: [{
         type: Schema.ObjectId,
-        ref: 'Document'
+        ref: 'Vote'
     }],
     user: {
         type: Schema.ObjectId,
@@ -165,25 +180,21 @@ var VoteSchema = new Schema({
     username: {
         type: String
     },
-    room: {
-        type: Schema.ObjectId,
-        ref: 'Room'
-    },
     parents: {
         type: Schema.ObjectId,
-        ref: 'Document'
+        ref: 'Vote'
     },
     childs: [{
         type: Schema.ObjectId,
-        ref: 'Document'
+        ref: 'Vote'
     }],
     clone_of: {
         type: Schema.ObjectId,
-        ref: 'Document'
+        ref: 'Vote'
     },
     clones: [{
         type: Schema.ObjectId,
-        ref: 'Document'
+        ref: 'Vote'
     }]
 });
 VoteSchema.path('title').validate(function(title) {
