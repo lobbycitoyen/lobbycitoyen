@@ -1,0 +1,82 @@
+
+// div(id="hemicycle" style="z-index:0;margin-left:35px;margin-right:auto;height:620px;")
+div(ng-hide="ui.ready == true")
+		p Chargement...
+
+div(ng-show="ui.ready == true")
+	h2 {{vote.title}} - {{vote.updated_moment}}
+	
+
+	div.user_owner(ng-if="is_owner")
+		p is owner ? {{is_owner}}	
+		input(ng-model="vote.title")
+		a(ng-click="edit('vote_title', vote._id, vote.title)" )  save	
+
+	div.user_logged(ng-if="user_logged")
+		p welcome @ 
+			a(ng-href="http://localhost:8081/me/account") {{user_logged.username}}		
+
+	a(ng-click="edit('new_voter', vote._id, 'contre')" )  je vote 'contre'
+
+	div.filters
+	
+		h3 count depute total : {{ui.count.all_deputes.total}} 
+		
+		p pour total : {{ui.count.all_deputes.pour}}
+		p contre total : {{ui.count.all_deputes.contre}}
+		p abstention {{ui.count.all_deputes.abstention}}
+		
+		h3 count citoyens  total : {{ui.count.all_citoyens.total}}
+		
+		p pour total :   {{ui.count.all_citoyens.pour}}
+		p contre total : {{ui.count.all_citoyens.contre}}
+		p abstention     {{ui.count.all_citoyens.abstention}}
+
+		ul
+
+
+			li 
+				a(ng-click="filter_('reset')") reset
+			li 
+				a(ng-click="filter_('deputes-only')") deputes-only
+			
+
+			li 
+				a(ng-click="filter_('deputes-pour')") - deputes-pour
+			li 
+				a(ng-click="filter_('deputes-contre')") - deputes-contre
+			li 
+				a(ng-click="filter_('deputes-abstention')") - deputes-abstention
+
+
+			li 
+				a(ng-click="filter_('citoyens-only')") citoyens-only
+			li
+				a(ng-click="filter_('citoyens-pour')") - citoyens-pour
+			li
+				a(ng-click="filter_('citoyens-contre')") - citoyens-contre
+			li
+				a(ng-click="filter_('citoyens-abstention')") - citoyens-abstention
+
+	h4  {{ui.count.current}} votant(s) affiché(s) sur un total de {{ui.count.all}} votants
+	ul.listing(ng-repeat="voter in vote.voters")
+
+		li.voter(ng-if="voter.visible === true")
+
+			//  img(ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
+			p	nom: {{voter.name}}  twitter : @{{voter.twitter_account}}  {{voter.id}}
+			p	position: {{voter.position}}
+			p	circonscription: {{voter.nom_circo}}
+			p	type: {{voter.type}}
+			p	place hemicycle : {{voter.place_en_hemicycle}}
+			p	group : {{voter.group}}
+			// p	note : {{voter.note}} 
+				input(ng-model="voter.note" type="text")
+				a() save
+			p	subgroup: {{voter.subgroup}}
+			div.action
+				p changer vote : 
+				ul(ng-repeat="p in ui.positions_available" )
+					li 
+						a(ng-click="edit('voter', voter._id, p)" )  {{p}}
+

@@ -1,0 +1,13 @@
+.main
+	h1 homepage
+
+	section.vote.list-item(ng-repeat='vote in votes')
+		a(href="/vote/{{vote.slug}}") {{vote.title}}
+		p(ng-bind-html="vote.excerpt" )
+
+	.user_box
+		a(href="/login") se connecter
+		a(href="/signup") s'inscrire
+
+footer
+		a(href="/") 

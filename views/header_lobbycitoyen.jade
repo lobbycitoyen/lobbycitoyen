@@ -1,0 +1,55 @@
+head
+	title #{doc_title} #{site_title} #{site_description} 	
+	meta(charset="utf-8")
+	meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+	meta(name='viewport', content='width=device-width, initial-scale=1.0')
+	base(href='/')
+	meta(name="description", content="#{doc_excerpt}")
+	meta(property="fb:app_id" , content="#{fbapp_id}")
+	
+	// https://developers.facebook.com/docs/reference/opengraph/object-type
+	// https://developers.facebook.com/tools/object-browser?app_id=XXX
+	meta(property="og:type", content="article")
+	meta(property="og:title", content="#{doc_title}")
+	meta(property="og:image", content="#{doc_thumbnail}")
+	meta(property="og:description", content="#{doc_excerpt}")
+	meta(property="og:site_name", content="#{site_title}")
+	meta(property="og:url", content="#{doc_slug_discret}")
+	link(rel='icon', type='image/png', href='favicon.png')
+	script(type='text/javascript').
+		var lobbycitoyen
+		var SOCKET_URL = '#{socket_url}'
+		var SOCKET_SERVER_PORT = '#{socket_server_port}'
+		var PORT = '#{port}'
+		var root_url = '#{root_url}'
+		var api_url = '#{api_url}'
+		var doc_include_js = '#{doc_include_js}'
+		var USERIN = new Object({'username':'#{user_in.username}', 'image_url': '#{user_in.image_url}', '_id': '#{user_in._id}'} )
+
+	script(src='/bower_components/angular/angular.js')
+	script(src='/bower_components/angular-resource/angular-resource.js')
+	script(src='/bower_components/angular-route/angular-route.js')
+	script(src='/bower_components/angular-sanitize/angular-sanitize.js')
+	script(src='/bower_components/underscore/underscore.js')
+	script(src='/bower_components/momentjs/moment.js')
+	script(type='text/javascript', src='bower_components/momentjs/min/moment-with-langs.min.js')
+	script(type='text/javascript', src='bower_components/momentjs/lang/fr.js')
+	script(src='/bower_components/angular-bootstrap/ui-bootstrap-tpls.js')
+
+	script(type='text/javascript',  src='#{lang_js_url}')
+
+
+	// user 
+	script(type='text/javascript', src='js/UserVote.js')
+
+
+	// Misc libs/utils
+	
+	script(type='text/javascript', src='js/script.min.js')
+	script(type='text/javascript', src='js/voteCtrl.js')
+	script(type='text/javascript', src='js/lobbycitoyen.js')
+	link(rel='stylesheet', href='css/main.css')
+
+
+	//
+			code by Tom Wersinger
