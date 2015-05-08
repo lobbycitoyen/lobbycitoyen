@@ -182,10 +182,12 @@ var app;
 
 					var out 			= {}
 					out.vote 			= doc.toObject()
+					out.is_owner = false;
 					if(req.user){
 						 out.userin 	= req.user.toObject()
+						 out.is_owner 		= exports.test_owner_or_key(doc,req)
 					}
-					out.is_owner 		= exports.test_owner_or_key(doc,req)
+				
 					if(out.is_owner == true){
 							
 					}
@@ -362,6 +364,10 @@ exports.edit  = function(req, res) {
 		if (err){
 			res.json(err)
 		} 
+		else if(!req.user){
+			res.json(err)
+	
+		}
 		else{
 
 			// TODO CHECK OWNERSHIP !!!
@@ -391,7 +397,7 @@ exports.edit  = function(req, res) {
 								doc.voters.push(voter_citoyen)
 
 				}
-				
+
 				 out.is_owner 		= exports.test_owner_or_key(doc,req)
 				 doc.updated = new Date().toJSON();
 				 doc.save(function(err,doc) {

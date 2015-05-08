@@ -106,7 +106,6 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 			        vendorService.getLibs().then(function(libs){
         				$scope.jQueryVersion = libs.$.fn.jquery;
         				$scope._= libs._;
-        				$scope.m= libs.moment;
 
         				 $scope.apply_filters()
     					// loadg()
