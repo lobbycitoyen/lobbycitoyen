@@ -245,11 +245,11 @@ angular.module('lobbycitoyen.vendorService', [])
     
     $script([
         'js/jquery-1.5.1.min.js',
-        'js/raphael-min.js',
+       // 'js/raphael-min.js',
         'bower_components/momentjs/moment.js',
-		'bower_components/underscore/underscore-min.js',
-        'js/raphael.tooltip.js',
-        'js/hemi.js'
+		'bower_components/underscore/underscore-min.js'
+       // 'js/raphael.tooltip.js',
+       // 'js/hemi.js'
     ], 'vendorBundle');
 
     $script.ready('vendorBundle', function() {
