@@ -1,0 +1,12 @@
+.main{
+	
+	// background:red;
+}
+
+ul{margin:0; padding:0;}
+li.voter{
+	list-style:none;
+	border:1px solid #ccc;
+	margin:1% 0;
+	padding:1%;
+ }

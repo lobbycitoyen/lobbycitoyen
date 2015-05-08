@@ -71,6 +71,11 @@ var VoterSchema = new Schema({
         default: '',
         trim: true
     },
+    note: {
+        type: String,
+        default: '',
+        trim: true
+    },
     twitter_account: {
         type: String,
         default: '',
@@ -101,6 +106,11 @@ var VoterSchema = new Schema({
         default: 'unknown',
         trim: true
     },
+    locked: {
+        type: Boolean,
+        default: false,
+        trim: true
+    },
     
     markup_options: [meta_options]
 });
@@ -128,9 +138,14 @@ var VoteSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    locked: {
+        type: Boolean,
+        default: false,
+        trim: true
+    },
     title: {
         type: String,
-        // default: 'Your title',
+        default: 'vote titre',
         unique: true,
         trim: true
     },
@@ -200,8 +215,6 @@ var VoteSchema = new Schema({
 VoteSchema.path('title').validate(function(title) {
     return title.length;
 }, 'Title cannot be blank');
-
-
 
 mongoose.model('Voter',VoterSchema);
 mongoose.model('Vote', VoteSchema);
