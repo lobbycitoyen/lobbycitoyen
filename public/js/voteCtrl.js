@@ -248,7 +248,7 @@ angular.module('lobbycitoyen.vendorService', [])
         'js/raphael-min.js',
         'bower_components/momentjs/moment.js',
 		'bower_components/underscore/underscore-min.js',
-        'js/js/raphael.tooltip.js',
+        'js/raphael.tooltip.js',
         'js/hemi.js'
     ], 'vendorBundle');
 
