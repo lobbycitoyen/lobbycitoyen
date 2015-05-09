@@ -28,10 +28,18 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 		$scope.ui = {}
 		$scope.ui.ready = false;
 		$scope.ui.count = {}
+		
+		
 		$scope.ui.positions_available = ['Pour', 'Contre', 'Abstention']
  
 
 		$scope.edit = function(type, id, value){
+
+			if(!$scope.user_logged){
+				// api will recheck logged user but frontend redirects too.
+         		window.location = root_url+':'+PORT+'/login';
+				return
+			}
 			var data = {}
 			var idv = $scope.vote._id;
 			var promise = VoteRest.vote_edit({Id:idv},{ 'type': type, 'id':id, 'value':value }).$promise;
@@ -49,12 +57,20 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 		      console.log(response);
 		    }.bind(this));
 		}
-
+		$scope.editor_= function(field){
+			if($scope.ui.editor[field] && $scope.ui.editor[field] == true){
+				$scope.ui.editor[field] = false
+			}
+			else{
+				$scope.ui.editor[field] = true
+			}
+			
+		}
 		$scope.apply_filters = function(){
+					$scope.ui.editor = {}
 					 $scope.vote.updated_moment = 'Mis à jour il y a ' +moment($scope.vote.updated).fromNow(); // 4 years ago()
 					 $scope._.each($scope.vote.voters, function(v,i){
-			          		v.visible = true;
-
+			          			v.visible = true;
 			          })
 					 var counts = {}
 
@@ -67,12 +83,13 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 					counts.all_deputes.pour =  _.filter($scope.vote.voters, function(v){ return v.type == 'depute' && v.position == 'Pour' }).length
 					counts.all_deputes.contre =  _.filter($scope.vote.voters, function(v){ return v.type == 'depute' && v.position == 'Contre'  }).length
 					counts.all_deputes.abstention =  _.filter($scope.vote.voters, function(v){ return v.type == 'depute' && v.position == 'Abstention'  }).length
-
+					counts.all_deputes.inconnue =  _.filter($scope.vote.voters, function(v){ return v.type == 'depute' && v.position == 'Inconnue'  }).length
 					counts.all_citoyens = new Object({'total':0, 'pour':0, 'contre':0, 'abstention':0})
 					counts.all_citoyens.total =  _.filter($scope.vote.voters, function(v){ return v.type == 'citoyen'; }).length
 					counts.all_citoyens.pour =  _.filter($scope.vote.voters, function(v){ return v.type == 'citoyen' && v.position == 'Pour' }).length
 					counts.all_citoyens.contre =  _.filter($scope.vote.voters, function(v){ return v.type == 'citoyen' && v.position == 'Contre'  }).length
 					counts.all_citoyens.abstention =  _.filter($scope.vote.voters, function(v){ return v.type == 'citoyen' && v.position == 'Abstention'  }).length
+					counts.all_citoyens.inconnue =  _.filter($scope.vote.voters, function(v){ return v.type == 'citoyen' && v.position == 'Inconnue'  }).length
 
 					
 					$scope.ui.count = counts
@@ -119,57 +136,18 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 		    }.bind(this));
 		}
 
-		$scope.filter_ = function(filter){
+
+		// can do better with more params
+		$scope.filter_ = function(filter_bytype, filter_byposition){
 			$scope.ui.count.current = 0;
-
 			$scope._.each($scope.vote.voters, function(v,i){
-					v.visible = false;
-					if(filter == 'reset'){
-						v.visible = true;
+					v.visible = false;				
+					if( (v.type == filter_bytype || filter_bytype == '') && ( v.position == filter_byposition || filter_byposition == '') ) {
+						v.visible = true;		
 					}
-					if(filter == 'h-only' && i == 2 ){
-						v.visible = true;
-
-					}
-					if(filter == 'deputes-only' && v.type == 'depute' ){
-						v.visible = true;
-
-					}
-					if(filter == 'citoyens-only' && v.type == 'citoyen' ){
-						v.visible = true;
-
-					}
-					if(filter == 'deputes-pour' && v.type == 'depute' && v.position == 'Pour' ){
-						v.visible = true;
-
-					}
-					if(filter == 'deputes-contre' && v.type == 'depute' && v.position == 'Contre' ){
-						v.visible = true;
-
-					}
-					if(filter == 'deputes-abstention' && v.type == 'depute' && v.position == 'Abstention' ){
-						v.visible = true;
-
-					}
-
-					if(filter == 'citoyens-pour' && v.type == 'citoyen' && v.position == 'Pour' ){
-						v.visible = true;
-
-					}
-					if(filter == 'citoyens-contre' && v.type == 'citoyen' && v.position == 'Contre' ){
-						v.visible = true;
-
-					}
-					if(filter == 'citoyens-abstention' && v.type == 'citoyen' && v.position == 'Abstention' ){
-						v.visible = true;
-
-					}
-					
-
 					if(v.visible){
 						$scope.ui.count.current++;
 					}
-				
 			})
 		}
 		$scope.init()
@@ -280,6 +258,13 @@ angular.module('lobbycitoyen.UserRest', [])
       account:{
         method:"GET",
         url: api_url+'/me/account',
+        //transformResponse: parseResponse
+        //interceptor: { response: parseResponse }
+        //isArray: false
+      },
+      new_vote:{
+        method:"GET",
+        url: root_url+':'+PORT+'/voteinit'
         //transformResponse: parseResponse
         //interceptor: { response: parseResponse }
         //isArray: false

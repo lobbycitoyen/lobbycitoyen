@@ -389,6 +389,12 @@ exports.edit  = function(req, res) {
 						doc.title = req.body.value
 								
 				}
+
+
+				if(req.body.type && (req.body.type =='content' || req.body.type =='excerpt') ) {
+						doc[req.body.type] = req.body.value
+
+				}
 				if(req.body.type && req.body.type =='new_voter'){
 						
 						/// CHECK NOT ALREADY IN ARRAY
@@ -513,14 +519,14 @@ var client = request.createClient('http://localhost:8081/');
 		  	console.log(body.deputes[i])
 
 
-		  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':body.deputes[i].depute.place_en_hemicycle,'nom_circo': body.deputes[i].depute.nom_circo,'subgroup':body.deputes[i].depute.parti_ratt_financier, 'group':body.deputes[i].depute.groupe_sigle, 'twitter_account': body.deputes[i].depute.slug, 'username':user.username, 'name': body.deputes[i].depute.nom,    'type': 'depute', 'position':'inconnue'} )
+		  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':body.deputes[i].depute.place_en_hemicycle,'nom_circo': body.deputes[i].depute.nom_circo,'subgroup':body.deputes[i].depute.parti_ratt_financier, 'group':body.deputes[i].depute.groupe_sigle, 'twitter_account': body.deputes[i].depute.slug, 'username':user.username, 'name': body.deputes[i].depute.nom,    'type': 'depute', 'position':'Inconnue'} )
 			new_doc.voters.push(voter_b)
 			
 		  		
 		  })
 
-			var voter_citoyen  = new Voter( {'user_id':user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':user.username, 'name': user.username,'type': 'citoyen', 'position':'inconnue'} )
-			new_doc.voters.push(voter_citoyen)
+			// var voter_citoyen  = new Voter( {'user_id':user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':user.username, 'name': user.username,'type': 'citoyen', 'position':'inconnue'} )
+			// new_doc.voters.push(voter_citoyen)
 
 
 

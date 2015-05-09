@@ -3,18 +3,7 @@ angular.module("ngLocale", [], ["$provide", function($provide) {
 var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
 $provide.value("$locale", {
 "CUSTOM" : {
-	"COMMENT" : {
-		"single" : "commentaire",
-		"textarea" : "Votre commentaire",
-		"label" : "Ajouter un commentaire",
-		"verb" : "commenter",
-		"needs_logging": "Vous devez être connecté pour ajouter un commentaire",
-		"logged_in_as" : "Vous êtes connecté en tant que",
-		"edit": "Modifier le commentaire",
-		"select_action": "Selectionner le commentaire"
-
-
-	},
+	
 	"ACTIONS" : {
 		"save" : "sauvegarder",
 		"edit" :"editer",
@@ -33,15 +22,15 @@ $provide.value("$locale", {
 	"HELP" : {
 		"fresh_document" : "Votre document est pret ! Un guide est disponible dans le menu d'aide <i class='fa fa-question'></i>",
 	},
-	"DOCUMENT" : {
+	"VOTE" : {
 		"by_author" : "par",
-		"my_documents" : "Mes documents",
+		"my_documents" : "Mes votes",
 		"default_title" :"Votre titre",
 		"default_content" :"Votre contenu texte",
-	 	"document_options":"Options du document",
+	 	"document_options":"Options du vote",
 		"instructions" :"IIII",
 		"default_published." :"Choisissez un status",
-		"create_new" :"Créer nouveau Document"
+		"create_new" :"Créer nouveau vote"
 	},
 
 	"DOCUMENT_FIELDS" : {
@@ -52,38 +41,7 @@ $provide.value("$locale", {
 
 	},
 
-	"OBJECTS" :{
-			"comment": "Commentaire",
-			"note" :"Note",
-			"semantic":"Sémantique",
-			"generic":"Générique",
-			"container":"Section",
-			"container_class":"Styles de section",
-			"child":"Objet enfant",
-			"media":"Média",
-			"markup":"Balise 'classique'",
-			"hyperlink":"Lien",
-			"datavalue":"Donnée brute"
-
-
-	},
-	"POSITIONS" : {
-		"wide" : "pleine largeur",
-		"left" : "à gauche",
-		"right" : "à droite",
-		"center" : "centré",
-		"under" : "en dessous",
-		"background" : "en fond",
-		"global" : "global",
-		"slidewide" :"slidewide",
-		"inline" : "inline"
-	},
-
-
-	"APP" : {
-		"write_invitation" : "Vous avez quelquechose à nous raconter ?",
-		"write_invitation_link" : "En savoir plus &raquo;"
-	},
+	
 	"USER": {
 		"login" : "S\'identifier",
 		"loginOrSignup" : "S\'identifier / Créer un compte",

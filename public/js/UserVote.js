@@ -49,10 +49,20 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, User
       window.location = link;
     }
 
-    $scope.create_doc = function(){
-      alert('off')
-      //var newdoc_service =  new DocumentService('n')
-      //newdoc_service.newdoc();
+    $scope.create_vote = function(){
+      
+
+      var promise = UserRest.new_vote({},{  }).$promise;
+      promise.then(function (Result) {
+        //alert(Result.slug)
+        $scope.documents.push(Result)
+
+       }.bind(this));
+     promise.catch(function (response) {     
+          console.log(response);
+     }.bind(this));    
+
+
   }
 
 
@@ -123,29 +133,6 @@ function UserCtrl($scope, $http , $location, $routeParams,  $locale, UserService
 
 
 
-angular.module('lobbycitoyen.UserRest', [])
-.factory("UserRest", function($resource, $rootScope){
-
-  var parseResponse = function (data) {
-    var data_ = angular.fromJson(data);
-    return data_
-  };
-
-  return $resource(
-    {},
-    {},
-    {
-      account:{
-        method:"GET",
-        url: api_url+'/me/account',
-        //transformResponse: parseResponse
-        //interceptor: { response: parseResponse }
-        //isArray: false
-      }
-    }
-  );
-
-})
 
 
 angular.module('lobbycitoyen.UserService', [])

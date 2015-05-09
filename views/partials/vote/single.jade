@@ -4,59 +4,80 @@ div(ng-hide="ui.ready == true")
 		p Chargement...
 
 div(ng-show="ui.ready == true")
-	h2 {{vote.title}} - {{vote.updated_moment}}
 	
-
-	div.user_owner(ng-if="is_owner")
-		p is owner ? {{is_owner}}	
+	h1 {{vote.title}}
+	h3 {{vote.updated_moment}}
+	
+	a(ng-if="is_owner" ng-click="editor_('title')") edit title
+	div(ng-if="ui.editor['title'] == true")
 		input(ng-model="vote.title")
-		a(ng-click="edit('vote_title', vote._id, vote.title)" )  save	
+		a(ng-click="edit('vote_title', vote._id, vote.title)" )  save title
+
+	h4(ng-bind-html="vote.excerpt") 
+	a(ng-if="is_owner" ng-click="editor_('excerpt')") edit excerpt
+	div(ng-if="ui.editor['excerpt'] == true")
+		textarea(ng-model="vote.excerpt")
+		a(ng-click="edit('excerpt', vote._id, vote.excerpt)" )  save excerpt
+
+	p(ng-bind-html="vote.content")
+	a(ng-if="is_owner" ng-click="editor_('content')") edit content
+	div(ng-if="ui.editor['content'] == true")
+		textarea(ng-model="vote.content")
+		a(ng-click="edit('content', vote._id, vote.content)" )  save content
 
 	div.user_logged(ng-if="user_logged")
 		p welcome @ 
-			a(ng-href="http://localhost:8081/me/account") {{user_logged.username}}		
+			a(ng-href="#{root_url}:#{port}/me/account") {{user_logged.username}}		
 
-	a(ng-click="edit('new_voter', vote._id, 'Contre')" )  je vote 'Contre'
+	a(ng-click="edit('new_voter', vote._id, 'Pour')" )  je vote Pour !
+	a(ng-click="edit('new_voter', vote._id, 'Contre')" )  je vote Contre !
+	a(ng-click="edit('new_voter', vote._id, 'Abstention')" )  je m'abstiens
+
 
 	div.filters
-	
+
+		
 		h3 count depute total : {{ui.count.all_deputes.total}} 
+		p Pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
+		p Contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
+		p Abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
+		p Inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
 		
-		p pour total : {{ui.count.all_deputes.pour}}
-		p contre total : {{ui.count.all_deputes.contre}}
-		p abstention {{ui.count.all_deputes.abstention}}
+		h3 count citoyens total : {{ui.count.all_citoyens.total}}
 		
-		h3 count citoyens  total : {{ui.count.all_citoyens.total}}
-		
-		p pour total :   {{ui.count.all_citoyens.pour}}
-		p contre total : {{ui.count.all_citoyens.contre}}
-		p abstention     {{ui.count.all_citoyens.abstention}}
+		p pour : :   {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
+		p contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
+		p abstention  :   {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
 
-		ul
+		h2 filtrer : 
+		ul.filter-btns
 
 
 			li 
-				a(ng-click="filter_('reset')") reset
+				a(ng-click="filter_('','')") aucun filtre
 			li 
-				a(ng-click="filter_('deputes-only')") deputes-only
+				a(ng-click="filter_( 'depute', '')") Deputes seulement
 			
+			ul 
+				li 
+					a(ng-click="filter_('depute','Pour')") - qui sont pour
+				li 
+					a(ng-click="filter_('depute','Contre')") - qui sont contre
+				li 
+					a(ng-click="filter_('depute','Abstention')") - qui s'abstiennent
+				li 
+					a(ng-click="filter_('depute','Inconnue')") - Position inconnue
+
 
 			li 
-				a(ng-click="filter_('deputes-pour')") - deputes-pour
-			li 
-				a(ng-click="filter_('deputes-contre')") - deputes-contre
-			li 
-				a(ng-click="filter_('deputes-abstention')") - deputes-abstention
-
-
-			li 
-				a(ng-click="filter_('citoyens-only')") citoyens-only
-			li
-				a(ng-click="filter_('citoyens-pour')") - citoyens-pour
-			li
-				a(ng-click="filter_('citoyens-contre')") - citoyens-contre
-			li
-				a(ng-click="filter_('citoyens-abstention')") - citoyens-abstention
+				a(ng-click="filter_('citoyen','')") citoyen
+			ul
+				li
+					a(ng-click="filter_('citoyen','Pour')") - qui sont pour
+				li
+					a(ng-click="filter_('citoyen','Contre')") - qui sont contre
+				li
+					a(ng-click="filter_('citoyen','Abstention')") -  qui s'abstiennent
 
 	h4  {{ui.count.current}} votant(s) affiché(s) sur un total de {{ui.count.all}} votants
 	ul.listing(ng-repeat="voter in vote.voters")
@@ -80,3 +101,7 @@ div(ng-show="ui.ready == true")
 					li 
 						a(ng-click="edit('voter', voter._id, p)" )  {{p}}
 
+
+footer
+		a(href="/") Home >
+		a(href="/") About >
