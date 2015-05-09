@@ -15,6 +15,7 @@ function HomeCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
    				 promise.then(function (Result) {
 			       if(Result){
 			          console.log(Result)
+			          $scope.user_logged = Result.userin;
 			          $scope.votes = Result.votes;
 					}
 			}.bind(this));
@@ -71,6 +72,8 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 		$scope.apply_filters = function(){
 					$scope.ui.editor = {}
 					 $scope.vote.updated_moment = 'Mis à jour il y a ' +moment($scope.vote.updated).fromNow(); // 4 years ago()
+					 $scope.vote.closetime_moment = '' +moment($scope.vote.closetime).fromNow(); // 4 years ago()
+
 					 $scope._.each($scope.vote.voters, function(v,i){
 			          			v.visible = true;
 			          })

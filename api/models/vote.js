@@ -138,6 +138,11 @@ var VoteSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    closetime: {
+        type: Date,
+        trim: true,
+        default: '2025-05-09T00:00:42.000Z'
+    },
     locked: {
         type: Boolean,
         default: false,

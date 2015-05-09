@@ -11,6 +11,7 @@ div(ng-show="ui.ready == true")
 	
 	h1 {{vote.title}}
 	h3 {{vote.updated_moment}} ({{vote.updated}})
+	h4 vote prévu {{vote.closetime_moment}}, le {{vote.closetime}}
 	
 	a(ng-if="is_owner" ng-click="editor_('title')") edit title
 	div(ng-if="ui.editor['title'] == true")
@@ -38,21 +39,22 @@ div(ng-show="ui.ready == true")
 	a(ng-click="edit('new_voter', vote._id, 'Abstention')" )  je m'abstiens
 
 
+	div.counts
+
+		
+		h3 Vote des deputés  (total: {{ui.count.all_deputes.total}})
+		p dont pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
+		p dont contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
+		p dont abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
+		p dont inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
+		
+		h3 Vote des citoyens  (total: {{ui.count.all_citoyens.total}})
+
+		
+		p dont pour : :   {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
+		p dont contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
+		p dont abstention  :   {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
 	div.filters
-
-		
-		h3 count depute total : {{ui.count.all_deputes.total}} 
-		p Pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
-		p Contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
-		p Abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
-		p Inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
-		
-		h3 count citoyens total : {{ui.count.all_citoyens.total}}
-		
-		p pour : :   {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
-		p contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
-		p abstention  :   {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
-
 		h2 filtrer : 
 		ul.filter-btns
 
@@ -83,21 +85,25 @@ div(ng-show="ui.ready == true")
 				li
 					a(ng-click="filter_('citoyen','Abstention')") -  qui s'abstiennent
 
-	h4  {{ui.count.current}} votant(s) affiché(s) sur un total de {{ui.count.all}} votants
-	ul.listing(ng-repeat="voter in vote.voters")
+		h4(ng-if="ui.count.current == 0") Aucun résultat
+		h4(ng-if="ui.count.current == 1") {{ui.count.current}} votant affiché sur un total de {{ui.count.all}} votants
+		h4(ng-if="ui.count.current > 1") {{ui.count.current}} votants affichés sur un total de {{ui.count.all}} votants
 
-		li.voter(ng-if="voter.visible === true")
 
-			//  img(ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
-			p	nom: {{voter.name}}  
+	div.listing(ng-repeat="voter in vote.voters")
+
+		div(class="voter group_{{voter.group}} position_{{voter.position}}" ng-if="voter.visible === true")
+
+			// img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
+			p.name {{voter.name}}  
 				a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @{{voter.twitter_account}}
 
 
-			p	position: {{voter.position}}
+			h3	position: {{voter.position}}
 			p	circonscription: {{voter.nom_circo}}
 			p	type: {{voter.type}}
-			p	place hemicycle : {{voter.place_en_hemicycle}}
-			p	group : {{voter.group}}
+			// p	place hemicycle : {{voter.place_en_hemicycle}}
+			// p	group : {{voter.group}}
 			// p	note : {{voter.note}} 
 				input(ng-model="voter.note" type="text")
 				a() save

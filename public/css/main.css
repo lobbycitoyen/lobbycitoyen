@@ -2270,16 +2270,42 @@ pulse fxxx
 }
 
 ul{margin:0; padding:0;}
-li.voter{
+.voter{
 	list-style:none;
 	border:1px solid #ccc;
-	margin:1% 0;
-	padding:1%;
+	margin:1% 0% 0 1%;
+	padding:2px;
+	width:23%;
+	display: inline-block;
+	float:left;
  }
 
+ .voter.group_UMP{
+ 	border-top:4px solid blue;
+ }
+  .voter.group_SRC{
+ 	border-top:4px solid red;
+ }
 
+.voter.position_Pour{
+ 	background: green;
+ }
+.voter.position_Contre{
+ 	background: red;
+ }
 
- .filters{
+.voter.position_Abstention{
+ 	background: #fff;
+ }
+
+.voter.position_Inconnue{
+ 	background: #dadada;
+ }
+.voter_pic{
+	margin:0 auto;
+}
+
+ .filters, .counts{
 list-style:none;
 	border:1px solid #ccc;
 	margin:1% 0;

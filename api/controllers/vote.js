@@ -44,11 +44,16 @@ var app;
 
 
  	exports.home= function(req, res) {
-			var user_ = ''
+			var user_ = {};
+
+			 if(req.user){
+				user_ = req.user.toObject()
+	
+			}
 		
 			res.render('vote', {
 				user_in : user_,
-				doc_title : '',
+				doc_title : 'Accueil',
 				raw_content : '',
 				doc_thumbnail : '',
 				doc_excerpt: '',
@@ -219,8 +224,15 @@ exports.list_api = function(req, res) {
 		return handleError(err);
 	} 
 	else{
+		var user_;
 
+			 if(req.user){
+				user_ = req.user.toObject()
+	
+			}
 		var out = {}
+
+		out.userin 	= user_
 		out.votes_count = votes.length
 		out.votes = []
 		_.each(votes, function(vote, i){
