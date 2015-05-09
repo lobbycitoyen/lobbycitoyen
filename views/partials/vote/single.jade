@@ -1,3 +1,7 @@
+div(class="branding sc bg_transparent")
+	h1
+		a(href="/#!", title="") 
+			span #{locals.site_title}
 
 // div(id="hemicycle" style="z-index:0;margin-left:35px;margin-right:auto;height:620px;")
 div(ng-hide="ui.ready == true")
@@ -6,7 +10,7 @@ div(ng-hide="ui.ready == true")
 div(ng-show="ui.ready == true")
 	
 	h1 {{vote.title}}
-	h3 {{vote.updated_moment}}
+	h3 {{vote.updated_moment}} ({{vote.updated}})
 	
 	a(ng-if="is_owner" ng-click="editor_('title')") edit title
 	div(ng-if="ui.editor['title'] == true")
@@ -85,7 +89,10 @@ div(ng-show="ui.ready == true")
 		li.voter(ng-if="voter.visible === true")
 
 			//  img(ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
-			p	nom: {{voter.name}}  twitter : @{{voter.twitter_account}}  {{voter.id}}
+			p	nom: {{voter.name}}  
+				a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @{{voter.twitter_account}}
+
+
 			p	position: {{voter.position}}
 			p	circonscription: {{voter.nom_circo}}
 			p	type: {{voter.type}}

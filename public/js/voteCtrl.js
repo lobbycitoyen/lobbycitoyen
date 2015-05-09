@@ -23,7 +23,7 @@ function HomeCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 		    }.bind(this));
 }
 
-function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteRest, vendorService) {
+function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteRest, vendorService, socket) {
 		
 		$scope.ui = {}
 		$scope.ui.ready = false;
@@ -46,6 +46,8 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
    				 promise.then(function (Result) {
 			       if(Result){
 			          $scope.vote = Result.vote
+			          socket.emit('docupdate',Result.vote)
+
 			          console.log(Result.vote)
 			          $scope.is_owner = Result.is_owner
 					  $scope.user_logged = Result.userin
@@ -139,6 +141,7 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 
 		// can do better with more params
 		$scope.filter_ = function(filter_bytype, filter_byposition){
+
 			$scope.ui.count.current = 0;
 			$scope._.each($scope.vote.voters, function(v,i){
 					v.visible = false;				
@@ -150,6 +153,23 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 					}
 			})
 		}
+
+
+	// 
+	socket.on('newsback', function (data) {
+		console.log('newsback')
+		console.log(data);
+		if(data.slug == $scope.vote.slug){
+			$scope.vote.voters = data.voters;
+			$scope.vote.updated = data.updated
+			$scope.apply_filters()
+		}
+		
+
+	})
+
+
+
 		$scope.init()
 	
 } 
@@ -272,3 +292,49 @@ angular.module('lobbycitoyen.UserRest', [])
     }
   );
 })
+
+angular.module('lobbycitoyen.Socket', [])
+.factory('socket', function($rootScope, $http, $location)  {
+  //  app.locals.port=
+  if(SOCKET_URL !==""){
+       console.log('loading sockets')
+       var socket = io.connect(SOCKET_URL+':'+SOCKET_SERVER_PORT);
+  
+    return {
+      start: function(){
+       //console.log(socket)
+      },
+      on: function (eventName, callback) {
+        socket.on(eventName, function () {
+          var args = arguments;
+         $rootScope.$apply(function () {
+            
+            callback.apply(socket, args);
+          });
+        });
+      },
+      emit: function (eventName, data, callback) {
+        socket.emit(eventName, data, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              //alert('on')
+              callback.apply(socket, args);
+            }
+          });
+        })
+      }
+    };
+
+  }
+  else {
+     console.log('not loading sockets')
+    var socket = '';
+    return {
+      on:  function () {},
+      emit:  function () {}
+
+    }
+    
+  };
+});

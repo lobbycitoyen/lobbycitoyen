@@ -4,7 +4,7 @@
 
 
 angular.module('lobbycitoyen',  [
-  'ui.bootstrap',
+  'ui.bootstrap', 'lobbycitoyen.Socket',
   'lobbycitoyen.document_controller', 'lobbycitoyen.voteRest', 'lobbycitoyen.vendorService',
   'ngLocale', 'ngResource', 'ngRoute', 'ngSanitize',
   'lobbycitoyen.user_controller', 'lobbycitoyen.UserRest',  'lobbycitoyen.UserService'

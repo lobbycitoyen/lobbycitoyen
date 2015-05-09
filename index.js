@@ -182,7 +182,7 @@ exports.io = io =  require('socket.io').listen(server, {log:false, origins:'*:*'
 io.on('connection', function(socket){ 
     console.log(chalk.green('Hello client'+socket.handshake.address))
     //console.log(socket);
-    socket.on('news', function(data){
+    socket.on('docupdate', function(data){
       require('./api/socket').socketer(socket, data);
     });
 

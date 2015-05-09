@@ -41,6 +41,11 @@ head
 
 	// user 
 	script(type='text/javascript', src='js/UserVote.js')
+	
+
+	if(socket_url !== '')
+		script(src='#{socket_url}:#{socket_server_port}/socket.io/socket.io.js')
+	
 
 
 	// Misc libs/utils

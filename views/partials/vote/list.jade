@@ -1,5 +1,11 @@
+div(class="branding sc bg_transparent")
+	h1
+		a(href="/#!", title="") 
+			span #{locals.site_title}
 
-h1 homepage
+h4 Lobbycitoyen est une application qui liste en temps réel et vote par vote la position de chacun de nos députés.
+h5 Vous pouvez egalement exprimer votre position et interpeller votre député.
+
 
 section.vote.list-item(ng-repeat='vote in votes')
 	a(href="/vote/{{vote.slug}}") {{vote.title}} {{vote.status}} {{vote.updated}}
