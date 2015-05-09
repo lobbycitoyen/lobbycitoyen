@@ -151,7 +151,6 @@ var VoteSchema = new Schema({
     status: {
         type: String,
         default: 'actif',
-        unique: true,
         trim: true
     },
     title: {
