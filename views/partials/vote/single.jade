@@ -1,4 +1,7 @@
-.container-fluid
+.container-fluid(ng-hide="ui.ready == true")
+			p.alert.alert-success Chargement...
+
+.container-fluid(ng-if="ui.ready")
 	nav.navbar.navbar-default
 		.container-fluid
 			.navbar-header
@@ -14,6 +17,10 @@
 				a.navbar-brand(href='/#!') #{locals.site_title}
 				
 			ul.nav.navbar-nav.navbar-right
+				li(ng-if="!user_logged")
+					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.login}}
+					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.register}}
+
 				li(ng-if="user_logged") 
 					span {{user_logged.username}} |
 						a(ng-href="#{root_url}:#{port}/me/account") Mon compte	
@@ -31,10 +38,9 @@
 
 
 	// div(id="hemicycle" style="z-index:0;margin-left:35px;margin-right:auto;height:620px;")
-	div(ng-hide="ui.ready == true")
-			p.alert.alert-success Chargement...
+	
 
-	div(ng-show="ui.ready == true")
+	div()
 		h1 {{vote.title}}
 		
 		a(ng-if="is_owner" ng-click="editor_('title')") edit title
@@ -112,13 +118,11 @@
 			
 			.progress
 
-				.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em; width:{{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%")
-								span.srd-only {{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}% pour 
-							
+				.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em;  max-width:90%; width:{{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%")
+					span.srd-only {{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}% pour 	
 				.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%")
 					span.srd-only {{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}% contre 
-				
-				.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:2em; width:{{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%")
+				.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:3em; max-width:90%;  width:{{(100*ui.count.citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%")
 					span.srd-only {{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}% abstention 
 
 

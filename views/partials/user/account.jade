@@ -74,7 +74,8 @@ div.main_center.user_account.bordered
 				
 					i.fa.fa-trash.delete_document(href="", ng-click="delete_document(doc) " )
 	
-
+	h3 inclure députés  : 
+		input(type="checkbox" name="preset_vote.inc_depute" ng-model="preset_vote.inc_depute" )
 	div(ng-repeat="s in preset_vote.s")
 		p {{s}} preset vote : 
 		select(ng-model="preset_vote.sigles[s]")

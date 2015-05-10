@@ -10,13 +10,21 @@ var GLOBALS;
 var _;
 angular.module('lobbycitoyen.document_controller', []);
 function HomeCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteRest, vendorService) {
+		$scope.ui = {}
+		$scope.ui.sockets_refresh =false
+		
 
+		$scope.ui.ready = false;
 		var promise = VoteRest.votes_home({},{ }).$promise;
    				 promise.then(function (Result) {
 			       if(Result){
 			          console.log(Result)
 			          $scope.user_logged = Result.userin;
 			          $scope.votes = Result.votes;
+			          $scope.ui.sockets_refresh = true
+		
+		
+						$scope.ui.ready =true;
 					}
 			}.bind(this));
 		    promise.catch(function (response) {     
@@ -24,13 +32,16 @@ function HomeCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 		    }.bind(this));
 }
 
-function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteRest, vendorService, socket) {
+function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeout, VoteRest, vendorService, socket) {
 		
 		$scope.ui = {}
 		$scope.ui.sockets_refresh =false
 		$scope.ui.lookup = 'Recherche'
 		$scope.ui.ready = false;
 		$scope.ui.count = {}
+		$scope.render_config = new Object()
+      	$scope.render_config.i18n =  $locale;
+      	$scope.i18n                       = $locale;
 		
 		
 		$scope.ui.positions_available = ['Pour', 'Contre', 'Abstention']
@@ -105,7 +116,7 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteR
 					counts.all_citoyens.pour =  $scope.getlength('citoyen', 'Pour') 
 					counts.all_citoyens.contre =  $scope.getlength('citoyen', 'Contre') 
 					counts.all_citoyens.abstention = $scope.getlength('citoyen', 'Abstention') 
-					counts.all_citoyens.inconnue =  ''
+					counts.all_citoyens.inconnue = 0
 					
 					$scope.ui.count = counts
 

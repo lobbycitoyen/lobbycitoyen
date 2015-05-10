@@ -516,43 +516,55 @@ exports.edit  = function(req, res) {
 	 var voter_name  = 'senateur_name_'+Math.random()
 
 
+	if(req.body.inc_depute && req.body.inc_depute == 'false' ){
+		// console.log('false')
+	}
+	else{
+			var client = request.createClient('http://localhost:8081/');
+		
+			client.get('dumps/deputes.json', function(err, res__, body) {
+			 // console.log(body.deputes);
 
-var client = request.createClient('http://localhost:8081/');
-	
-		client.get('dumps/deputes.json', function(err, res__, body) {
-		 // console.log(body.deputes);
+			  _.each(body.deputes, function(depute, i){
+			  //	console.log(body.deputes[i])
 
-		  _.each(body.deputes, function(depute, i){
-		  //	console.log(body.deputes[i])
+				var pos_preset = 'Inconnue'
 
-			var pos_preset = 'Inconnue'
+			  	if(req.body.UMP && body.deputes[i].depute.groupe_sigle == 'UMP'){
+					 pos_preset = req.body.UMP
 
-		  	if(req.body.UMP && body.deputes[i].depute.groupe_sigle == 'UMP'){
-				 pos_preset = req.body.UMP
+			  	}
+			  	if(req.body.SRC && body.deputes[i].depute.groupe_sigle == 'SRC'){
+					 pos_preset = req.body.SRC
 
-		  	}
-		  	if(req.body.SRC && body.deputes[i].depute.groupe_sigle == 'SRC'){
-				 pos_preset = req.body.SRC
-
-		  	}
-
-
-		  	
-
-	
-
-		  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':body.deputes[i].depute.place_en_hemicycle,'nom_circo': body.deputes[i].depute.nom_circo,'subgroup':body.deputes[i].depute.parti_ratt_financier, 'group':body.deputes[i].depute.groupe_sigle, 'twitter_account': body.deputes[i].depute.slug, 'username':user.username, 'name': body.deputes[i].depute.nom,    'type': 'depute', 'position':pos_preset} )
-			new_doc.voters.push(voter_b)
-			
-		  		
-		  })
-
-			// var voter_citoyen  = new Voter( {'user_id':user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':user.username, 'name': user.username,'type': 'citoyen', 'position':'inconnue'} )
-			// new_doc.voters.push(voter_citoyen)
+			  	}
 
 
+			  	
 
-		  	var doc = new Vote(new_doc);
+		
+
+			  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':body.deputes[i].depute.place_en_hemicycle,'nom_circo': body.deputes[i].depute.nom_circo,'subgroup':body.deputes[i].depute.parti_ratt_financier, 'group':body.deputes[i].depute.groupe_sigle, 'twitter_account': body.deputes[i].depute.slug, 'username':user.username, 'name': body.deputes[i].depute.nom,    'type': 'depute', 'position':pos_preset} )
+				new_doc.voters.push(voter_b)
+				
+			  		
+			  })
+
+				// var voter_citoyen  = new Voter( {'user_id':user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':user.username, 'name': user.username,'type': 'citoyen', 'position':'inconnue'} )
+				// new_doc.voters.push(voter_citoyen)
+
+
+
+			  
+
+
+
+			}); // get end.
+
+	}
+
+
+	var doc = new Vote(new_doc);
 			doc.user = user;
 		   	doc.username =user.username;
 				
@@ -567,10 +579,6 @@ var client = request.createClient('http://localhost:8081/');
 			   			          
 			        }
 			    });
-
-
-
-		}); // get end.
 
 
    // save user old });
