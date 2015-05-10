@@ -7,7 +7,7 @@ angular.module('lobbycitoyen',  [
   'ui.bootstrap', 'lobbycitoyen.Socket',
   'lobbycitoyen.document_controller', 'lobbycitoyen.voteRest', 'lobbycitoyen.vendorService',
   'ngLocale', 'ngResource', 'ngRoute', 'ngSanitize',
-  'lobbycitoyen.user_controller', 'lobbycitoyen.UserRest',  'lobbycitoyen.UserService'
+  'lobbycitoyen.user_controller', 'lobbycitoyen.UserService'
   ]).
   config(['$localeProvider','$routeProvider', '$locationProvider','$sceDelegateProvider', '$sceProvider', function($localeProvider,$routeProvider, $locationProvider, $sceDelegateProvider,$sceProvider ) {
     $routeProvider.

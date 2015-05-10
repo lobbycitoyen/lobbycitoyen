@@ -399,6 +399,9 @@ exports.edit  = function(req, res) {
 				if(req.body.type && req.body.type =='vote_title'){
 						
 						doc.title = req.body.value
+						var slug             =     S(doc.title).slugify().s 
+						doc.slug = slug;
+
 								
 				}
 
@@ -473,37 +476,29 @@ exports.edit  = function(req, res) {
 
 
  exports.init = function (req, res) {
- if(req.user){
+ 		console.log('req.body')
 
-	var user = req.user
- }
- else{
- 		var user = new User({'username':'bqsudob'+Math.random(), 'email':'sfqsqs'+Math.random()+'dfsdds@sd.fr', 'password':'secrddet'});
- 		user.user_options = new Array();
-    
-	    var r = getRandomInt(0, 255);
-	    var g = getRandomInt(0, 255);
-	    var b = getRandomInt(0, 255);
-	    var rand_color = 'rgb('+r+', '+g+', '+b+')';
-	    var user_option = new Object( {'option_name':'color', 'option_value': rand_color,  'option_type': '' } )
-	    user.user_options.push(user_option)
-	    user.provider = 'local';
- }
-    var message = null;
-   
+ 		console.log(req.body)
+		 if(req.user){
+
+			var user = req.user
+		 }
+		 else{
+		 		var user = new User({'username':'a-'+Math.random()+'-'+Math.random(), 'email':'a-'+Math.random()+'-'+Math.random()+'dfsdds@sd.fr', 'password':'secrddet'});
+			    user.provider = 'local';
+		 }
+    	var message = null;
    		/*user.save(function(err, user) {
-
-
     	req.logIn(user, function(err) {    
             
         });
 
 */
 
+			
 
-
-	var raw_title        =     'vote #'+Math.random();
-	var raw_content      =     'hello world';
+	var raw_title        =     'vote #'+Math.random()+'-'+Math.random();
+	var raw_content      =     'Contenu du vote';
 	
 
  	var filtered_title   =     raw_title;
@@ -528,10 +523,25 @@ var client = request.createClient('http://localhost:8081/');
 		 // console.log(body.deputes);
 
 		  _.each(body.deputes, function(depute, i){
-		  	console.log(body.deputes[i])
+		  //	console.log(body.deputes[i])
+
+			var pos_preset = 'Inconnue'
+
+		  	if(req.body.UMP && body.deputes[i].depute.groupe_sigle == 'UMP'){
+				 pos_preset = req.body.UMP
+
+		  	}
+		  	if(req.body.SRC && body.deputes[i].depute.groupe_sigle == 'SRC'){
+				 pos_preset = req.body.SRC
+
+		  	}
 
 
-		  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':body.deputes[i].depute.place_en_hemicycle,'nom_circo': body.deputes[i].depute.nom_circo,'subgroup':body.deputes[i].depute.parti_ratt_financier, 'group':body.deputes[i].depute.groupe_sigle, 'twitter_account': body.deputes[i].depute.slug, 'username':user.username, 'name': body.deputes[i].depute.nom,    'type': 'depute', 'position':'Inconnue'} )
+		  	
+
+	
+
+		  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':body.deputes[i].depute.place_en_hemicycle,'nom_circo': body.deputes[i].depute.nom_circo,'subgroup':body.deputes[i].depute.parti_ratt_financier, 'group':body.deputes[i].depute.groupe_sigle, 'twitter_account': body.deputes[i].depute.slug, 'username':user.username, 'name': body.deputes[i].depute.nom,    'type': 'depute', 'position':pos_preset} )
 			new_doc.voters.push(voter_b)
 			
 		  		
@@ -551,7 +561,7 @@ var client = request.createClient('http://localhost:8081/');
 					if (err) {
 			   			res.json(err);
 			        } else {
-						//console.log(doc)
+						console.log('vote created')
 						// var doc =  Vote.findOne({title: filtered_title}).populate('user', '-salt name username image_url').populate('room').exec(function(err, doc) {
 			        	res.json(doc)
 			   			          

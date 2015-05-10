@@ -4,7 +4,7 @@
 * AngularJs controllers for "user" view 
 
   - UserProfileCtrl
-    > get account infos (name, mail,..., and documents)
+    > get account infos (name, mail,..., and votes)
 
   - UserCtrl (before logged, handle both login and signup forms)
   
@@ -18,17 +18,30 @@ var render;
 
 
 angular.module('lobbycitoyen.user_controller', []);
-function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, UserRest, UserService ) {
+function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, VoteRest, UserService ) {
      
       $scope.render_config = new Object()
-         $scope.render_config.i18n =  $locale;
-        $scope.i18n                       = $locale;
+      $scope.render_config.i18n =  $locale;
+      $scope.i18n                       = $locale;
+      $scope.globals = GLOBALS;
+      $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
 
-    $scope.globals = GLOBALS;
-        $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+      $scope.preset_vote = {}
+      $scope.preset_vote.opt = ['Pour','Contre', 'Abstention', 'Inconnue']
+      $scope.preset_vote.s = ['UMP', 'SRC']
+      $scope.preset_vote.sigles = {}
+      
+
+      _.each($scope.preset_vote.s, function(s){
+          $scope.preset_vote.sigles[s] = ''
+                
+      })
+
+      
+      
     
-    var promise = UserRest.account({},{  }).$promise;
+    var promise = VoteRest.account({},{  }).$promise;
       promise.then(function (Result) {
           
           var this_user = new UserService()
@@ -45,24 +58,25 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, User
        
         }
 
-        $scope.external_link = function (link){
-      window.location = link;
+    $scope.external_link = function (link){
+          window.location = link;
     }
 
     $scope.create_vote = function(){
-      
 
-      var promise = UserRest.new_vote({},{  }).$promise;
+
+      var preset = new Object({'UMP': $scope.preset_vote.sigles.UMP, 'SRC': $scope.preset_vote.sigles.SRC})
+      
+      var promise = VoteRest.new_vote({}, serialize(preset)  ).$promise;
       promise.then(function (Result) {
         //alert(Result.slug)
         $scope.documents.push(Result)
 
-       }.bind(this));
-     promise.catch(function (response) {     
+      }.bind(this));
+      
+      promise.catch(function (response) {     
           console.log(response);
-     }.bind(this));    
-
-
+      }.bind(this));    
   }
 
 

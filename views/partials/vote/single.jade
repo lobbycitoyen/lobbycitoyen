@@ -1,120 +1,190 @@
-div(class="branding sc bg_transparent")
-	h1
-		a(href="/#!", title="") 
-			span #{locals.site_title}
+.container-fluid
+	nav.navbar.navbar-default
+		.container-fluid
+			.navbar-header
+				button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+					span.sr-only Toggle navigation
+					|         
+					span.icon-bar
+					|         
+					span.icon-bar
+					|         
+					span.icon-bar
+					|       
+				a.navbar-brand(href='/#!') #{locals.site_title}
+				
+			ul.nav.navbar-nav.navbar-right
+				li(ng-if="user_logged") 
+					span {{user_logged.username}} |
+						a(ng-href="#{root_url}:#{port}/me/account") Mon compte	
 
-// div(id="hemicycle" style="z-index:0;margin-left:35px;margin-right:auto;height:620px;")
-div(ng-hide="ui.ready == true")
-		p Chargement...
-
-div(ng-show="ui.ready == true")
-	
-	h1 {{vote.title}}
-	h3 {{vote.updated_moment}} ({{vote.updated}})
-	h4 vote prévu {{vote.closetime_moment}}, le {{vote.closetime}}
-	
-	a(ng-if="is_owner" ng-click="editor_('title')") edit title
-	div(ng-if="ui.editor['title'] == true")
-		input(ng-model="vote.title")
-		a(ng-click="edit('vote_title', vote._id, vote.title)" )  save title
-
-	h4(ng-bind-html="vote.excerpt") 
-	a(ng-if="is_owner" ng-click="editor_('excerpt')") edit excerpt
-	div(ng-if="ui.editor['excerpt'] == true")
-		textarea(ng-model="vote.excerpt")
-		a(ng-click="edit('excerpt', vote._id, vote.excerpt)" )  save excerpt
-
-	p(ng-bind-html="vote.content")
-	a(ng-if="is_owner" ng-click="editor_('content')") edit content
-	div(ng-if="ui.editor['content'] == true")
-		textarea(ng-model="vote.content")
-		a(ng-click="edit('content', vote._id, vote.content)" )  save content
-
-	div.user_logged(ng-if="user_logged")
-		p welcome @ 
-			a(ng-href="#{root_url}:#{port}/me/account") {{user_logged.username}}		
-
-	a(ng-click="edit('new_voter', vote._id, 'Pour')" )  je vote Pour !
-	a(ng-click="edit('new_voter', vote._id, 'Contre')" )  je vote Contre !
-	a(ng-click="edit('new_voter', vote._id, 'Abstention')" )  je m'abstiens
+						
 
 
-	div.counts
 
+	ol.breadcrumb
+		li 
+			a(href="/#!") home
+		li
+			a.active(href="/#!") vote
+
+
+
+	// div(id="hemicycle" style="z-index:0;margin-left:35px;margin-right:auto;height:620px;")
+	div(ng-hide="ui.ready == true")
+			p.alert.alert-success Chargement...
+
+	div(ng-show="ui.ready == true")
+		h1 {{vote.title}}
 		
-		h3 Vote des deputés  (total: {{ui.count.all_deputes.total}})
-		p dont pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
-		p dont contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
-		p dont abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
-		p dont inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
-		
-		h3 Vote des citoyens  (total: {{ui.count.all_citoyens.total}})
+		a(ng-if="is_owner" ng-click="editor_('title')") edit title
+		div(ng-if="ui.editor['title'] == true")
+			input(ng-model="vote.title")
+			a(ng-click="edit('vote_title', vote._id, vote.title)" )  save title
+		h3 {{vote.updated_moment}} ({{vote.updated}})
 
-		
-		p dont pour : :   {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
-		p dont contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
-		p dont abstention  :   {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
-	div.filters
-		h2 filtrer : 
-		ul.filter-btns
-
-
-			li 
-				a(ng-click="filter_('','')") aucun filtre
-			li 
-				a(ng-click="filter_( 'depute', '')") Deputes seulement
+		div.jumbotron
 			
-			ul 
+		
+			h4 vote prévu {{vote.closetime_moment}}, le {{vote.closetime}}
+
+			h4(ng-bind-html="vote.excerpt") 
+			a(ng-if="is_owner" ng-click="editor_('excerpt')") edit excerpt
+			div(ng-if="ui.editor['excerpt'] == true")
+				textarea(ng-model="vote.excerpt")
+				a(ng-click="edit('excerpt', vote._id, vote.excerpt)" )  save excerpt
+
+			p(ng-bind-html="vote.content")
+			a(ng-if="is_owner" ng-click="editor_('content')") edit content
+			div(ng-if="ui.editor['content'] == true")
+				textarea(ng-model="vote.content")
+				a(ng-click="edit('content', vote._id, vote.content)" )  save content
+
+	
+
+		div.citoyen_action
+			div(ng-hide="has_voted" ) 
+				a.btn.btn-primary(ng-click="edit('new_voter', vote._id, 'Pour')" )  je vote Pour !
+				a(ng-click="edit('new_voter', vote._id, 'Contre')" )  je vote Contre !
+				a(ng-click="edit('new_voter', vote._id, 'Abstention')" )  je m'abstiens
+			div(ng-if="has_voted" ) 
+				a.btn.btn-primary(ng-click="filter_('','', user_logged.username)") - voir mon vote
+		
+
+
+		
+			
+			
+		
+
+		div.counts
+			h3 Vote des deputés  (total: {{ui.count.all_deputes.total}})
+			p dont :
+				span.success pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
+				span  | contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
+				span  | abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
+				span  | inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
+			.progress
+
+				.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%")
+								span.srd-only {{(100*ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}% pour 
+							
+				.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%")
+					span.srd-only {{(100*ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}% contre 
+				
+				.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%")
+					span.srd-only {{(100*ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}% abstention 
+				
+			// .progress-bar.progress-bar-warning.progress-bar-striped(style="width:{{(100*ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%")
+				span.srd-only {{(100*ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}% inconnue
+
+		
+			
+				
+		
+
+			h3 Vote des citoyens  (total: {{ui.count.all_citoyens.total}})
+			p dont :
+				span.success pour : {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
+				span  | contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
+				span  | abstention {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
+				
+			
+			.progress
+
+				.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em; width:{{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%")
+								span.srd-only {{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}% pour 
+							
+				.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%")
+					span.srd-only {{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}% contre 
+				
+				.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:2em; width:{{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%")
+					span.srd-only {{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}% abstention 
+
+
+
+
+		div.filters
+			h2 filtrer : 
+			ul.filter-btns
 				li 
-					a(ng-click="filter_('depute','Pour')") - qui sont pour
+						input(ng-model="ui.lookup")
+
 				li 
-					a(ng-click="filter_('depute','Contre')") - qui sont contre
+					a(ng-click="filter_('','', '')") aucun filtre
 				li 
-					a(ng-click="filter_('depute','Abstention')") - qui s'abstiennent
-				li 
-					a(ng-click="filter_('depute','Inconnue')") - Position inconnue
-
-
-			li 
-				a(ng-click="filter_('citoyen','')") citoyen
-			ul
-				li
-					a(ng-click="filter_('citoyen','Pour')") - qui sont pour
-				li
-					a(ng-click="filter_('citoyen','Contre')") - qui sont contre
-				li
-					a(ng-click="filter_('citoyen','Abstention')") -  qui s'abstiennent
-
-		h4(ng-if="ui.count.current == 0") Aucun résultat
-		h4(ng-if="ui.count.current == 1") {{ui.count.current}} votant affiché sur un total de {{ui.count.all}} votants
-		h4(ng-if="ui.count.current > 1") {{ui.count.current}} votants affichés sur un total de {{ui.count.all}} votants
-
-
-	div.listing(ng-repeat="voter in vote.voters")
-
-		div(class="voter group_{{voter.group}} position_{{voter.position}}" ng-if="voter.visible === true")
-
-			// img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
-			p.name {{voter.name}}  
-				a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @{{voter.twitter_account}}
-
-
-			h3	position: {{voter.position}}
-			p	circonscription: {{voter.nom_circo}}
-			p	type: {{voter.type}}
-			// p	place hemicycle : {{voter.place_en_hemicycle}}
-			// p	group : {{voter.group}}
-			// p	note : {{voter.note}} 
-				input(ng-model="voter.note" type="text")
-				a() save
-			p	subgroup: {{voter.subgroup}}
-			div.action
-				p changer vote : 
-				ul(ng-repeat="p in ui.positions_available" )
+					a(ng-click="filter_( 'depute', '', '')") Deputes seulement
+				
+				ul 
 					li 
-						a(ng-click="edit('voter', voter._id, p)" )  {{p}}
+						a(ng-click="filter_('depute','Pour','')") - qui sont pour
+					li 
+						a(ng-click="filter_('depute','Contre','')") - qui sont contre
+					li 
+						a(ng-click="filter_('depute','Abstention','')") - qui s'abstiennent
+					li 
+						a(ng-click="filter_('depute','Inconnue','')") - Position inconnue
 
 
-footer
-		a(href="/") Home >
-		a(href="/") About >
+				li 
+					a(ng-click="filter_('citoyen','','')") citoyen
+				ul
+					li
+						a(ng-click="filter_('citoyen','Pour','')") - qui sont pour
+					li
+						a(ng-click="filter_('citoyen','Contre','')") - qui sont contre
+					li
+						a(ng-click="filter_('citoyen','Abstention', '')") -  qui s'abstiennent
+
+			h4(ng-if="ui.count.current == 0") Aucun résultat
+			h4(ng-if="ui.count.current == 1") {{ui.count.current}} votant affiché sur un total de {{ui.count.all}} votants
+			h4(ng-if="ui.count.current > 1") {{ui.count.current}} votants affichés sur un total de {{ui.count.all}} votants
+
+
+		div.row
+			div(ng-repeat="voter in vote.voters" class="col-md-4 voter type_{{voter.type}} group_{{voter.group}} byme_{{voter.byme}} position_{{voter.position}}" ng-if="voter.visible === true")
+
+				// img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
+				p.name {{voter.name}}  
+					a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @{{voter.twitter_account}}
+
+
+				h3	position: {{voter.position}}
+				p	circonscription: {{voter.nom_circo}}
+				p	type: {{voter.type}}
+				// p	place hemicycle : {{voter.place_en_hemicycle}}
+				p	group : {{voter.group}}
+				// p	note : {{voter.note}} 
+					input(ng-model="voter.note" type="text")
+					a() save
+				p	subgroup: {{voter.subgroup}}
+				div.action
+					p changer vote : 
+					ul(ng-repeat="p in ui.positions_available" )
+						li 
+							a(ng-click="edit('voter', voter._id, p)" )  {{p}}
+
+
+	footer
+			a(href="/") Home >
+			a(href="/") About >

@@ -74,6 +74,14 @@ div.main_center.user_account.bordered
 				
 					i.fa.fa-trash.delete_document(href="", ng-click="delete_document(doc) " )
 	
+
+	div(ng-repeat="s in preset_vote.s")
+		p {{s}} preset vote : 
+		select(ng-model="preset_vote.sigles[s]")
+			option(ng-repeat="opt in preset_vote.opt" ng-value="opt") {{opt}}
+		// input(type="text" name="preset_vote.sigles[s]" ng-model="preset_vote.sigles[s]" )
+	
+	h3 preset : {{preset_vote.sigles}}
 	a.btn_big.btn_newdoc(title="{{render_config.i18n.CUSTOM.VOTE.create_new}}" ng-click="create_vote()" ) {{render_config.i18n.CUSTOM.VOTE.create_new}}
 
 footer

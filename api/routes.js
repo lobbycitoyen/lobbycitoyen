@@ -95,7 +95,7 @@ module.exports = function(app, passport, auth) {
     // app.get('/api/v1/users', users.list);
      
   	// first boot
-    app.get('/voteinit', voteCtrl.init );
+    app.post('/voteinit', voteCtrl.init );
 
 
 };
