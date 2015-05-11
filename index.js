@@ -22,7 +22,7 @@ helpers = require('view-helpers');
 var locale = require("locale")
   , supported = ["fr-fr", "en-us"]
 
-
+// could check file existence for github forkers :)
 nconf.argv().env().file({file:'config.json'});
 
 var auth = require('./api/authorization');
