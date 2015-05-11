@@ -27,7 +27,6 @@ auth = require('../authorization');
 
 exports.list= function(req, res) {
     User.find({}, function(err, users) {
-
         //var userMap = {}
         console.log('total:'+users.length)
         users.forEach(function(user) {
@@ -41,8 +40,8 @@ exports.list= function(req, res) {
 }
 
 exports.login = function(req, res) {
-         var user_ = new Object({'username': null,  'image_url':null})
-         res.render('vote', { user_in:user_ } );
+    var user_ = new Object({'username': null,  'image_url':null})
+    res.render('vote', { user_in:user_ } );
 };
 
 exports.signup = function(req, res) {
@@ -114,14 +113,6 @@ exports.create = function(req, res) {
     
     var user = new User(req.body);
     var message = null;
-    user.user_options = new Array();
-    
-    var r = getRandomInt(0, 255);
-    var g = getRandomInt(0, 255);
-    var b = getRandomInt(0, 255);
-    var rand_color = 'rgb('+r+', '+g+', '+b+')';
-    var user_option = new Object( {'option_name':'color', 'option_value': rand_color,  'option_type': '' } )
-    user.user_options.push(user_option)
     user.provider = 'local';
     console.log('req.body>')
     console.log(req.body)
@@ -159,33 +150,14 @@ exports.getDetailsByName = function(req, res) {
         if(reqUser){
             if(req.user && req.user.username === reqUsername){
 
-res.jsonp({
+                res.jsonp({
                         user : reqUser
-                      //  articles : articles
                     });
-
-                /*articles.allByUsername(reqUsername).then(function(articles){
-                    res.jsonp({
-                        user : reqUser,
-                        articles : articles
-                    });
-                });
-                 */
             }
             else{
                 res.jsonp({
-                        user : reqUser,
-                      //  articles : articles
-                    });
-
-                /*
-                articles.publishedByUsername(reqUsername).onResolve(function(err, articles){
-                    res.jsonp({
-                        user : reqUser,
-                        articles : articles
-                    });
+                        user : reqUser
                 });
-                s*/
             }
         }
         else{

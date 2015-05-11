@@ -19,7 +19,7 @@
 			ul.nav.navbar-nav.navbar-right
 				li(ng-if="!user_logged")
 					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.login}}
-					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.register}}
+					a(ng-href="#{root_url}:#{port}/signup") {{render_config.i18n.CUSTOM.USER.register}}
 
 				li(ng-if="user_logged") 
 					span {{user_logged.username}} |
@@ -84,46 +84,48 @@
 		
 
 		div.counts
-			h3 Vote des deputés  (total: {{ui.count.all_deputes.total}})
-			p dont :
-				span.success pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
-				span  | contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
-				span  | abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
-				span  | inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
-			.progress
+			div.count_deputes(ng-if="ui.count.all_deputes.total > 0")
+				h3 Vote des deputés  (total: {{ui.count.all_deputes.total}})
+				p dont :
+					span.success pour : {{ui.count.all_deputes.pour}} ({{ (100 * ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%)
+					span  | contre : {{ui.count.all_deputes.contre}} ({{ (100 * ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%)
+					span  | abstention {{ui.count.all_deputes.abstention}} ({{ (100 * ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%)
+					span  | inconnue {{ui.count.all_deputes.inconnue}} ({{ (100 * ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%)
+				.progress
 
-				.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%")
-								span.srd-only {{(100*ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}% pour 
-							
-				.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%")
-					span.srd-only {{(100*ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}% contre 
-				
-				.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%")
-					span.srd-only {{(100*ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}% abstention 
-				
-			// .progress-bar.progress-bar-warning.progress-bar-striped(style="width:{{(100*ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%")
-				span.srd-only {{(100*ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}% inconnue
+					.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}%")
+									span.srd-only {{(100*ui.count.all_deputes.pour / ui.count.all_deputes.total) | number:0}}% pour 
+								
+					.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}%")
+						span.srd-only {{(100*ui.count.all_deputes.contre / ui.count.all_deputes.total) | number:0}}% contre 
+					
+					.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}%")
+						span.srd-only {{(100*ui.count.all_deputes.abstention / ui.count.all_deputes.total) | number:0}}% abstention 
+					
+				// .progress-bar.progress-bar-warning.progress-bar-striped(style="width:{{(100*ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}%")
+					span.srd-only {{(100*ui.count.all_deputes.inconnue / ui.count.all_deputes.total) | number:0}}% inconnue
 
-		
 			
 				
-		
-
-			h3 Vote des citoyens  (total: {{ui.count.all_citoyens.total}})
-			p dont :
-				span.success pour : {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
-				span  | contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
-				span  | abstention {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
 				
-			
-			.progress
+		
+			div.count_citoyens(ng-if="ui.count.all_citoyens.total > 0")
 
-				.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em;  max-width:90%; width:{{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%")
-					span.srd-only {{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}% pour 	
-				.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%")
-					span.srd-only {{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}% contre 
-				.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:3em; max-width:90%;  width:{{(100*ui.count.citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%")
-					span.srd-only {{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}% abstention 
+				h3 Vote des citoyens  (total: {{ui.count.all_citoyens.total}})
+				p dont :
+					span.success pour : {{ui.count.all_citoyens.pour}} ({{ (100 * ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%)
+					span  | contre : {{ui.count.all_citoyens.contre}} ({{ (100 * ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%)
+					span  | abstention {{ui.count.all_citoyens.abstention}} ({{ (100 * ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%)
+					
+				
+				.progress
+
+					.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em;  max-width:90%; width:{{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}%")
+						span.srd-only {{(100*ui.count.all_citoyens.pour / ui.count.all_citoyens.total) | number:0}}% pour 	
+					.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}%")
+						span.srd-only {{(100*ui.count.all_citoyens.contre / ui.count.all_citoyens.total) | number:0}}% contre 
+					.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:3em; max-width:90%;  width:{{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}%")
+						span.srd-only {{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}% abstention 
 
 
 
@@ -191,4 +193,4 @@
 
 	footer
 			a(href="/") Home >
-			a(href="/") About >
+		

@@ -1,51 +1,78 @@
+.container-fluid(ng-hide="ui.ready == true")
+			p.alert.alert-success Chargement...
 
-div(class="branding sc bg_transparent")
-	h1
-		a(href="/#!", title="") 
-			span #{locals.site_title}
+.container-fluid(ng-if="ui.ready")
+	nav.navbar.navbar-default
+		.container-fluid
+			.navbar-header
+				button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+					span.sr-only Toggle navigation
+					|         
+					span.icon-bar
+					|         
+					span.icon-bar
+					|         
+					span.icon-bar
+					|       
+				a.navbar-brand(href='/#!') #{locals.site_title}
+				
+			ul.nav.navbar-nav.navbar-right
+				li(ng-if="!user_logged")
+					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.login}}
+					a(ng-href="#{root_url}:#{port}/signup") {{render_config.i18n.CUSTOM.USER.register}}
 
-// TOP MENUS
-div.top_menus(ng-include="fragments['top_menus'][0]['url']")
+				li(ng-if="user_logged") 
+					span {{user_logged.username}} |
+						a(ng-href="#{root_url}:#{port}/me/account") Mon compte	
+
+						
 
 
-// flash_message
-div.flash_message(ng-if="flash_message.text !==''", class="{{flash_message.classname}}" ng-include="fragments['flash_message'][0]['url']")
 
-
-div.main_center.user_account.bordered
-	h3 {{render_config.i18n.CUSTOM.USER.myprofile}} 
-	a(style="float:right;" ng-click="external_link(root_url+'/signout')") {{render_config.i18n.CUSTOM.USER.logout}} &nbsp;
-			i.fa.fa-sign-out 
-
-	br
-	// br
-	// span.color_avatar(style="background-color:{{user_options['color'].value}}")
-	h5 {{render_config.i18n.CUSTOM.USER.logged_in_as}} 
-		strong {{userin.username}}
-
-	// p {{me}}
-	// p {{user_options}}
-	p mail : {{userin.email}} {{render_config.i18n.CUSTOM.USER.hidden_from_public}} 
-	// p newsletter : {{userin.newsletter}} 
-	p twitter : {{userin.twitter_account}} 
-
-	// p 
-		img(ng-src="{{me.image_url}}")
-	// p 
-		a(href="/doc/create") {{render_config.i18n.CUSTOM.DOCUMENT.create_new}} 
-	p 		
-		
-	// h3 Options
-	ul 
-		// li You are an admin ? {{me.is_admin}}
-		// li You are an editor ? {{me.is_editor}}
-		// li subscribed to newsletter ? {{me.newsletter}}
-
-	ul(ng-repeat="option in me.user_options")
+	ol.breadcrumb
 		li 
-			// {{option.option_name}} : {{option.option_value}}
-	br
-	br
+			a(href="/#!") home
+
+		li
+			a.active(href="/#!") {{render_config.i18n.CUSTOM.USER.myprofile}}
+
+
+	div.jumbotron
+			
+
+
+		a(style="float:right;" ng-click="external_link(root_url+'/signout')") {{render_config.i18n.CUSTOM.USER.logout}} &nbsp;
+				i.fa.fa-sign-out 
+
+		br
+		// br
+		// span.color_avatar(style="background-color:{{user_options['color'].value}}")
+		h5 {{render_config.i18n.CUSTOM.USER.logged_in_as}} 
+			strong {{userin.username}}
+
+		// p {{me}}
+		// p {{user_options}}
+		p mail : {{userin.email}} {{render_config.i18n.CUSTOM.USER.hidden_from_public}} 
+		// p newsletter : {{userin.newsletter}} 
+		p twitter : {{userin.twitter_account}} 
+
+		// p 
+			img(ng-src="{{me.image_url}}")
+		// p 
+			a(href="/doc/create") {{render_config.i18n.CUSTOM.DOCUMENT.create_new}} 
+		p 		
+			
+		// h3 Options
+		ul 
+			// li You are an admin ? {{me.is_admin}}
+			// li You are an editor ? {{me.is_editor}}
+			// li subscribed to newsletter ? {{me.newsletter}}
+
+		ul(ng-repeat="option in me.user_options")
+			li 
+				// {{option.option_name}} : {{option.option_value}}
+		br
+		br
 	h3.mydocuments(style="float:left;" ng-bind-html="render_config.i18n.CUSTOM.DOCUMENT.my_documents")
 	br 
 	table.user_documents()
@@ -82,8 +109,6 @@ div.main_center.user_account.bordered
 			option(ng-repeat="opt in preset_vote.opt" ng-value="opt") {{opt}}
 		// input(type="text" name="preset_vote.sigles[s]" ng-model="preset_vote.sigles[s]" )
 	
-	h3 preset : {{preset_vote.sigles}}
+	h3 preset : {{preset_vote}}
 	a.btn_big.btn_newdoc(title="{{render_config.i18n.CUSTOM.VOTE.create_new}}" ng-click="create_vote()" ) {{render_config.i18n.CUSTOM.VOTE.create_new}}
 
-footer
-	// p 2014 - MusicBox

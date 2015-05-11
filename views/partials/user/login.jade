@@ -16,7 +16,7 @@
 			ul.nav.navbar-nav.navbar-right
 				li(ng-if="!user_logged")
 					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.login}}
-					a(ng-href="#{root_url}:#{port}/login") {{render_config.i18n.CUSTOM.USER.register}}
+					a(ng-href="#{root_url}:#{port}/register") {{render_config.i18n.CUSTOM.USER.register}}
 
 				li(ng-if="user_logged") 
 					span {{user_logged.username}} |

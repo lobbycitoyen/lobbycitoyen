@@ -9,10 +9,12 @@ var inheriting = {};
 var GLOBALS;
 var _;
 angular.module('lobbycitoyen.document_controller', []);
-function HomeCtrl($scope, $http , $sce, $location, $routeParams, $timeout, VoteRest, vendorService) {
+function HomeCtrl($scope, $http , $sce, $location, $routeParams, $locale,$timeout, VoteRest, vendorService) {
 		$scope.ui = {}
 		$scope.ui.sockets_refresh =false
-		
+			$scope.render_config = new Object()
+      	$scope.render_config.i18n =  $locale;
+      	$scope.i18n                       = $locale;
 
 		$scope.ui.ready = false;
 		var promise = VoteRest.votes_home({},{ }).$promise;

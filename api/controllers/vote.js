@@ -248,17 +248,6 @@ exports.list_api = function(req, res) {
 		
 	})
 };
-exports.listRender = function(req, res) {
-	var query = Vote.find();
-	query.exec(function (err, docs) {
-		//console.log(docs)
-		if (err) return handleError(err);
-			docs = JSON.stringify(docs)
-			res.render('index', {
-				docs: docs
-			});
-	})
-};
 
 
 
@@ -518,6 +507,21 @@ exports.edit  = function(req, res) {
 
 	if(req.body.inc_depute && req.body.inc_depute == 'false' ){
 		// console.log('false')
+		var doc = new Vote(new_doc);
+			doc.user = user;
+		   	doc.username =user.username;
+				
+			//doc.populate('user', 'name username image_url').exec(function(err,doc) {
+				doc.save(function(err,doc) {
+					if (err) {
+			   			res.json(err);
+			        } else {
+						console.log('vote created')
+						// var doc =  Vote.findOne({title: filtered_title}).populate('user', '-salt name username image_url').populate('room').exec(function(err, doc) {
+			        	res.json(doc)
+			   			          
+			        }
+			    });
 	}
 	else{
 			var client = request.createClient('http://localhost:8081/');
@@ -555,16 +559,7 @@ exports.edit  = function(req, res) {
 
 
 
-			  
-
-
-
-			}); // get end.
-
-	}
-
-
-	var doc = new Vote(new_doc);
+			  var doc = new Vote(new_doc);
 			doc.user = user;
 		   	doc.username =user.username;
 				
@@ -579,6 +574,15 @@ exports.edit  = function(req, res) {
 			   			          
 			        }
 			    });
+
+
+
+			}); // get end.
+
+	}
+
+
+	
 
 
    // save user old });

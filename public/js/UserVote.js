@@ -32,7 +32,11 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
       $scope.preset_vote.opt = ['Pour','Contre', 'Abstention', 'Inconnue']
       $scope.preset_vote.s = ['UMP', 'SRC']
       $scope.preset_vote.sigles = {}
-      
+
+      $scope.ui = {}
+      $scope.ui.sockets_refresh =false
+      $scope.ui.ready = false;
+        
 
       _.each($scope.preset_vote.s, function(s){
           $scope.preset_vote.sigles[s] = ''
@@ -48,6 +52,7 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
           var this_user = new UserService()
           this_user.SetFromApi(Result.user)
           this_user.MapOptions(Result)
+            $scope.ui.ready = true
           
 
      }.bind(this));
