@@ -23,7 +23,7 @@
 
 				li(ng-if="user_logged") 
 					span {{user_logged.username}} |
-						a(ng-href="#{root_url}:#{port}/me/account") Mon compte	
+						a(ng-href="#{root_url}:#{port}/me/account") {{render_config.i18n.CUSTOM.USER.myprofile}}
 
 						
 
@@ -31,9 +31,9 @@
 
 	ol.breadcrumb
 		li 
-			a(href="/#!") home
+			a(href="/#!") Accueil
 		li
-			a.active(href="/#!") vote
+			a.active(href="#") Vote
 
 
 
@@ -132,7 +132,8 @@
 
 		div.filters
 			h2 filtrer : 
-			ul.filter-btns
+			ul.filter-btns(ng-if="ui.count.all_deputes.total > 0")
+
 				li 
 						input(ng-model="ui.lookup")
 
@@ -151,7 +152,7 @@
 					li 
 						a(ng-click="filter_('depute','Inconnue','')") - Position inconnue
 
-
+			ul.filter-btns(ng-if="ui.count.all_citoyens.total > 0")
 				li 
 					a(ng-click="filter_('citoyen','','')") citoyen
 				ul
@@ -172,7 +173,7 @@
 
 				// img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
 				p.name {{voter.name}}  
-					a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @{{voter.twitter_account}}
+					a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @ {{voter.twitter_account}}
 
 
 				h3	position: {{voter.position}}

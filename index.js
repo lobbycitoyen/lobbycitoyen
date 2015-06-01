@@ -105,8 +105,9 @@ app.configure(function(){
         //connect flash for flash messages
         app.use(flash());
         
+         app.use(locale('fr-fr'))
         //i18n (server)
-        app.use(locale(supported))
+      //  app.use(locale(supported))
         // lang_js_url : 
         
 

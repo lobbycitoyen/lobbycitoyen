@@ -23,7 +23,7 @@
 
 				li(ng-if="user_logged") 
 					span {{user_logged.username}} |
-						a(ng-href="#{root_url}:#{port}/me/account") Mon compte	
+						a(ng-href="#{root_url}:#{port}/me/account") {{render_config.i18n.CUSTOM.USER.myprofile}}
 
 						
 
@@ -34,7 +34,7 @@
 			a(href="/#!") home
 
 		li
-			a.active(href="/#!") {{render_config.i18n.CUSTOM.USER.myprofile}}
+			a.active(ng-href="#{root_url}:#{port}/me/account") {{render_config.i18n.CUSTOM.USER.myprofile}}
 
 
 	div.jumbotron
@@ -103,6 +103,11 @@
 	
 	h3 inclure députés  : 
 		input(type="checkbox" name="preset_vote.inc_depute" ng-model="preset_vote.inc_depute" )
+	h3 inclure sénateurs  : 
+		input(type="checkbox" name="preset_vote.inc_senateurs" ng-model="preset_vote.inc_senateurs" )
+	
+
+
 	div(ng-repeat="s in preset_vote.s")
 		p {{s}} preset vote : 
 		select(ng-model="preset_vote.sigles[s]")

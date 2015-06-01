@@ -29,6 +29,8 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
 
       $scope.preset_vote = {}
       $scope.preset_vote.inc_depute = 'false';
+            $scope.preset_vote.inc_senateurs = 'false';
+
       $scope.preset_vote.opt = ['Pour','Contre', 'Abstention', 'Inconnue']
       $scope.preset_vote.s = ['UMP', 'SRC']
       $scope.preset_vote.sigles = {}
@@ -71,7 +73,7 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
     $scope.create_vote = function(){
 
 
-      var preset = new Object({'inc_depute':$scope.preset_vote.inc_depute ,'UMP': $scope.preset_vote.sigles.UMP, 'SRC': $scope.preset_vote.sigles.SRC})
+      var preset = new Object({'inc_senateurs': ''+$scope.preset_vote.inc_senateurs, 'inc_depute':''+$scope.preset_vote.inc_depute ,'UMP': $scope.preset_vote.sigles.UMP, 'SRC': $scope.preset_vote.sigles.SRC})
       
       var promise = VoteRest.new_vote({}, serialize(preset)  ).$promise;
       promise.then(function (Result) {
@@ -96,18 +98,18 @@ function UserCtrl($scope, $http , $location, $routeParams,  $locale, UserService
   // get user
   new UserService().SetFromLocale()
 
-          $scope.render_config = new Object()
-         $scope.render_config.i18n =  $locale;
+        $scope.render_config = new Object()
+        $scope.render_config.i18n =  $locale;
         $scope.i18n                       = $locale;
-  
-  $scope.register_url = root_url+':'+PORT+'/signup';
-  $scope.created_user_link   = root_url+':'+PORT+'/me/account?welcome';
 
-  if($routeParams.redirect_url){
-    $scope.created_user_link  = $routeParams.redirect_url;
-    $scope.register_url     += '?redirect_url='+$routeParams.redirect_url
+        $scope.register_url = root_url+':'+PORT+'/signup';
+        $scope.created_user_link   = root_url+':'+PORT+'/me/account?welcome';
 
-  }
+        if($routeParams.redirect_url){
+          $scope.created_user_link  = $routeParams.redirect_url;
+          $scope.register_url     += '?redirect_url='+$routeParams.redirect_url
+
+        }
 
   //  $scope.render_config = new Object({'i18n':  $locale})
 

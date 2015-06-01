@@ -1,13 +1,19 @@
 'use strict';
 
-// Declare app level module which depends on filters, and services
-
+// Declare angular app top level
 
 angular.module('lobbycitoyen',  [
-  'ui.bootstrap', 'lobbycitoyen.Socket',
-  'lobbycitoyen.document_controller', 'lobbycitoyen.voteRest', 'lobbycitoyen.vendorService',
-  'ngLocale', 'ngResource', 'ngRoute', 'ngSanitize',
-  'lobbycitoyen.user_controller', 'lobbycitoyen.UserService'
+  'ngLocale', 
+  'ngResource',
+  'ngRoute', 
+  'ngSanitize',
+  'ui.bootstrap', 
+  'lobbycitoyen.vendorService',
+  'lobbycitoyen.user_controller',
+  'lobbycitoyen.document_controller', 
+  'lobbycitoyen.voteRest',
+  'lobbycitoyen.UserService',
+  'lobbycitoyen.Socket'
   ]).
   config(['$localeProvider','$routeProvider', '$locationProvider','$sceDelegateProvider', '$sceProvider', function($localeProvider,$routeProvider, $locationProvider, $sceDelegateProvider,$sceProvider ) {
     $routeProvider.
@@ -52,8 +58,3 @@ angular.module('lobbycitoyen',  [
     }
   ])
   // .config( ['$controllerProvider', function($controllerProvider) { $controllerProvider.allowGlobals(); }]);
-
-
-
-// instead of empty file include, but files exist #v+
-// if/not included switcher

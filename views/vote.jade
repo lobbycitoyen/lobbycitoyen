@@ -1,5 +1,9 @@
 doctype
-html(class="is_home_{{ui.is_home}} is_single_{{ui.is_single}}", ng-app="lobbycitoyen", xmlns="http://www.w3.org/1999/xhtml")
-	include header_lobbycitoyen.jade
+html(ng-app="lobbycitoyen", xmlns="http://www.w3.org/1999/xhtml")
+	include header.jade
 	body()
 		div.main(ng-view, autoscroll="true")
+			// crawlers prerender
+			h1 #{locals.site_description }
+			h2 #{locals.site_description_long }
+
