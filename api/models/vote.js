@@ -98,7 +98,7 @@ var VoterSchema = new Schema({
     },
     position: {
         type: String,
-        default: '',
+        default: 'Inconnue',
         trim: true
     },
     status: {

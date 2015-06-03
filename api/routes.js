@@ -51,8 +51,7 @@ module.exports = function(app, passport, auth) {
     // views & partials
 
 
-    app.get('/vote/:slug',                   voteCtrl.single);
-    app.get('/widget/:type/:slug',                   voteCtrl.single);
+    app.get('/vote/:slug/:widget?/:type?',                   voteCtrl.single);
 
 
 
@@ -74,7 +73,7 @@ module.exports = function(app, passport, auth) {
 
 
    // app.post('/api/v1/doc/:doc_id/edit',            auth.requiresLogin_or_secret,  docs.doc_edit);
-   // app.post('/api/v1/doc/:slug/delete',            auth.requiresLogin_or_secret, docs.doc_delete);
+        app.post('/api/v1/vote/:slug/delete',         auth.requiresLogin_or_secret,voteCtrl.vote_delete);
     
 
 

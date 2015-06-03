@@ -98,7 +98,7 @@
 						i.fa.fa-unlock(href="", ng-click="external_link('/vote/'+doc.slug+'?secret='+doc.secret) " )
 						i.fa.fa-database(href="", ng-click="external_link('/api/v1/vote/'+doc.slug) " ) 
 						// {{doc._id}}
-						i.fa.fa-trash.delete_document(href="", ng-click="delete_document(doc) " ) delete
+						i.fa.fa-trash.delete_document(href="", ng-click="delete_document(doc.slug) " ) delete
 		
 		h3 inclure députés  : 
 			input(type="checkbox" name="preset_vote.inc_depute" ng-model="preset_vote.inc_depute" )

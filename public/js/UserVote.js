@@ -62,14 +62,27 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
           console.log(response);
      }.bind(this));
 
-        $scope.delete_document= function(doc){
+       
 
-          var tdoc            = new DocumentService();
-          tdoc.slug = doc.slug
-          tdoc.doc_delete({id:doc.slug});
+
+     $scope.delete_document= function(slug){
+
+         
+
+          var promise = VoteRest.vote_delete({}, {id:slug}  ).$promise;
+      promise.then(function (Result) {
+        alert('vote deleted')
+
+      }.bind(this));
+      
+      promise.catch(function (response) {     
+          console.log(response);
+      }.bind(this));    
 
        
         }
+        
+
 
     $scope.external_link = function (link){
           window.location = link;

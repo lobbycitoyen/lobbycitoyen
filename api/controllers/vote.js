@@ -40,6 +40,10 @@ nconf.argv().env().file({file:'config.json'});
 
 var chalk = require('chalk');
 var app;
+
+				var groupslist = new Array('UMP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
+
+
 //var mail= require('./../../sendmail.js');
 
 
@@ -165,12 +169,25 @@ var app;
 			else{
 				if(doc){
 
+					var out 			= {}
+					out.vote 			= doc.toObject()
+					out.vote.byposition = new Object({Pour:0, Contre:0, Inconnue:0, Abstention:0})
 
+					out.vote.bypositionbygroup = {}
 
-					doc.voters.forEach(function(mk) {
-                   //	 console.log(mk.status)
-            			// userMap[user._id] = user
-          
+					_.each(groupslist, function(g){
+						var o =  new Object({Pour:0, Contre:0, Inconnue:0, Abstention:0})
+						
+						out.vote.bypositionbygroup[g] = o
+						
+
+					})
+
+					_.each(doc.voters, function(mk) {
+						console.log(out.vote.bypositionbygroup[mk.group])
+						out.vote.byposition[mk.position] = parseInt(out.vote.byposition[mk.position])+1
+
+                  	
         			})
 
 					
@@ -185,8 +202,15 @@ var app;
 					}
 					
 
-					var out 			= {}
-					out.vote 			= doc.toObject()
+				
+
+
+					//out.vote.byposition = {'Pour':5}
+					// out.vote.bygroup    =   {'UMP':5}
+
+
+
+
 					out.is_owner = false;
 					if(req.user){
 						 out.userin 	= req.user.toObject()
@@ -327,7 +351,7 @@ exports.doc_create = function(req,res){
 
 
 
-exports.doc_delete  = function(req, res) {
+exports.vote_delete  = function(req, res) {
 
 // TODO : 	// check owner
 
@@ -572,7 +596,6 @@ exports.edit  = function(req, res) {
 			}
 
 
-				var groupslist = new Array('UMP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
 				_.each(groupslist, function(group){
 					var req_body = req.body
 					var req_body_sigle = req_body[group]

@@ -46,7 +46,13 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		$scope.render_config = new Object()
       	$scope.render_config.i18n =  $locale;
       	$scope.i18n                       = $locale;
-		
+      	$scope.groupslist = ['UMP', 'SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
+
+
+      	$scope.ui.iswidget = $routeParams.widget
+      	$scope.ui.widgettype = $routeParams.widgettype
+
+
 		
 		$scope.ui.positions_available = ['Pour', 'Contre', 'Abstention']
 
@@ -90,7 +96,55 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 					 $scope.vote.updated_moment = 'Mis à jour il y a ' +moment($scope.vote.updated).fromNow(); // 4 years ago()
 					 $scope.vote.closetime_moment = '' +moment($scope.vote.closetime).fromNow(); // 4 years ago()
 
-					 $scope._.each($scope.vote.voters, function(v,i){
+				    $scope.byposition = $scope.vote.byposition
+				    $scope.bypositionbygroup = $scope.vote.bypositionbygroup
+
+
+
+					$scope.colors = {}
+						$scope.colors.Pour= 'green'
+						$scope.colors.Contre= 'red'
+						$scope.colors.Abstention= 'orange'
+						$scope.colors.Inconnue= 'grey'
+
+					$scope.data = {}
+					$scope.data.all = []
+
+					
+
+					_.each(_.keys($scope.bypositionbygroup), function(k){
+					
+						$scope.data[k] = []
+						_.each(_.keys($scope.bypositionbygroup[k]), function(p){
+
+
+							 var v = _.filter($scope.vote.voters, function(v){ return v.group == k && (v.position == p || p == '')  }).length
+
+							var b = {"label": p , "value": v, color: $scope.colors[p]}
+							$scope.data[k].push(b)	
+						})
+					})
+
+
+					
+
+
+					for (var key in  $scope.byposition) {
+		   					var obj = $scope.byposition[key];
+		      				var b = {"label":key , "value": obj, color: $scope.colors[key]}
+							$scope.data.all.push(b)	
+					}
+
+						
+
+
+  
+  
+$scope.options = {thickness: 100};
+
+
+
+					_.each($scope.vote.voters, function(v,i){
 			          			v.visible = true;
 			          			v.byme = false;
 			          			if(v.type=='citoyen' && $scope.user_logged && $scope.user_logged.username == v.username){
@@ -134,10 +188,13 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
    				promise.then(function (Result) {
 			     	if(Result){
 			         
+			     	
+					
+
 				        $scope.vote = Result.vote
 				        $scope.is_owner = Result.is_owner
 						$scope.user_logged = Result.userin
-				        // console.log($scope.user_logged)
+				       console.log(Result.vote.voters)
 				        
 				        vendorService.getLibs().then(function(libs){
 	        				$scope.jQueryVersion = libs.$.fn.jquery;
@@ -189,6 +246,8 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		if(data.slug == $scope.vote.slug && $scope.ui.sockets_refresh == true){
 			$scope.vote.voters = data.voters;
 			$scope.vote.updated = data.updated
+		
+
 			$scope.apply_filters()
 		}		
 	})
@@ -225,9 +284,9 @@ angular.module('lobbycitoyen.voteRest', [])
         //interceptor: { response: parseResponse }
         //isArray: false
       },
-      doc_delete:{
+      vote_delete:{
         method:"POST",
-        url: api_url+'/doc/:Id/delete',
+        url: api_url+'/vote/:Id/delete',
          params :  {Id:'@id'},
         //transformResponse: parseResponse
         //interceptor: { response: parseResponse }
