@@ -128,7 +128,7 @@ var app;
 					
 
 
-					console.log('public doc rendered')	
+				//	console.log('public doc rendered')	
 					res.render('vote', {
 						user_in : user_,
 						doc_title : doc.title,
@@ -168,7 +168,7 @@ var app;
 
 
 					doc.voters.forEach(function(mk) {
-                   	 console.log(mk.status)
+                   //	 console.log(mk.status)
             			// userMap[user._id] = user
           
         			})
@@ -300,7 +300,7 @@ exports.doc_create = function(req,res){
 	if(req.user){
 		doc.user = req.user;
    	 	doc.username = req.user.username;
-   	 	console.log(req.user)
+   	 	//console.log(req.user)
 	}
 	else{
 		//return res.send('users/signup', {
@@ -572,16 +572,18 @@ exports.edit  = function(req, res) {
 			}
 
 
-				
+				var groupslist = new Array('UMP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
+				_.each(groupslist, function(group){
+					var req_body = req.body
+					var req_body_sigle = req_body[group]
+					
+					if(req_body_sigle && depute.groupe_sigle == group){
+						
+						 pos_preset = ''+req_body_sigle
+			  		}
+				})
 
-			  	if(req.body.UMP && depute.groupe_sigle == 'UMP'){
-					 pos_preset = req.body.UMP
 
-			  	}
-			  	if(req.body.SRC == depute.groupe_sigle == 'SRC'){
-					 pos_preset = req.body.SRC
-
-			  	}
 
 
 			  	var twitter_account = '';

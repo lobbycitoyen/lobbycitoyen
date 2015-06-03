@@ -29,10 +29,10 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
 
       $scope.preset_vote = {}
       $scope.preset_vote.inc_depute = 'false';
-            $scope.preset_vote.inc_senateurs = 'false';
+      $scope.preset_vote.inc_senateurs = 'false';
 
       $scope.preset_vote.opt = ['Pour','Contre', 'Abstention', 'Inconnue']
-      $scope.preset_vote.s = ['UMP', 'SRC']
+      $scope.preset_vote.s = ['UMP', 'SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
       $scope.preset_vote.sigles = {}
 
       $scope.ui = {}
@@ -63,6 +63,11 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
      }.bind(this));
 
         $scope.delete_document= function(doc){
+
+          var tdoc            = new DocumentService();
+          tdoc.slug = doc.slug
+          tdoc.doc_delete({id:doc.slug});
+
        
         }
 
@@ -73,8 +78,15 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
     $scope.create_vote = function(){
 
 
-      var preset = new Object({'inc_senateurs': ''+$scope.preset_vote.inc_senateurs, 'inc_depute':''+$scope.preset_vote.inc_depute ,'UMP': $scope.preset_vote.sigles.UMP, 'SRC': $scope.preset_vote.sigles.SRC})
+      var preset = new Object({'inc_senateurs': ''+$scope.preset_vote.inc_senateurs, 'inc_depute':''+$scope.preset_vote.inc_depute})
       
+    _.each($scope.preset_vote.s, function(s){
+           preset[s] = $scope.preset_vote.sigles[s]
+                
+      })
+
+
+
       var promise = VoteRest.new_vote({}, serialize(preset)  ).$promise;
       promise.then(function (Result) {
         //alert(Result.slug)

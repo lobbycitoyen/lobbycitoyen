@@ -20,7 +20,7 @@ flash = require('connect-flash'),
 helpers = require('view-helpers');
 
 var locale = require("locale")
-  , supported = ["fr-fr", "en-us"]
+  , supported = ["fr-fr"]
 
 // could check file existence for github forkers :)
 nconf.argv().env().file({file:'config.json'});
@@ -105,7 +105,7 @@ app.configure(function(){
         //connect flash for flash messages
         app.use(flash());
         
-         app.use(locale('fr-fr'))
+         app.use(locale(supported))
         //i18n (server)
       //  app.use(locale(supported))
         // lang_js_url : 
@@ -132,7 +132,7 @@ app.configure(function(){
         // i18n dyn. load
         
         app.use(function(req, res, next){
-         res.locals.lang_js_url = '/js/angular-modules/i18n/angular_'+req.locale+'.js';
+         res.locals.lang_js_url = '/js/angular-modules/i18n/angular_fr-fr.js';
 
          next();
         });

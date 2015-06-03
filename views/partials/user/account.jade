@@ -73,47 +73,46 @@
 				// {{option.option_name}} : {{option.option_value}}
 		br
 		br
-	h3.mydocuments(style="float:left;" ng-bind-html="render_config.i18n.CUSTOM.DOCUMENT.my_documents")
-	br 
-	table.user_documents()
-		thead
-			tr
-				th {{render_config.i18n.CUSTOM.DOCUMENT_FIELDS.title}} 
-				th {{render_config.i18n.CUSTOM.DOCUMENT_FIELDS.published}} 
-				th {{render_config.i18n.CUSTOM.DOCUMENT_FIELDS.updated}} 
-				th options
-		
-		tbody
-			tr(ng-repeat="doc in documents")
-				td 
-					a(ng-click="external_link('/vote/'+doc.slug)") {{doc.title}} 
-				td {{doc.published}}
+	div()
+		h3.mydocuments(style="float:left;" ng-bind-html="render_config.i18n.CUSTOM.DOCUMENT.my_documents")
+		br 
+		table.user_documents()
+			thead
+				tr
+					th {{render_config.i18n.CUSTOM.DOCUMENT_FIELDS.title}} 
+					th {{render_config.i18n.CUSTOM.DOCUMENT_FIELDS.published}} 
+					th {{render_config.i18n.CUSTOM.DOCUMENT_FIELDS.updated}} 
+					th options
 			
-				td {{doc.created | date }}
+			tbody
+				tr(ng-repeat="doc in documents")
+					td 
+						a(ng-click="external_link('/vote/'+doc.slug)") {{doc.title}} 
+					td {{doc.published}}
 				
-				td 
-					i.fa.fa-cogs(href="", ng-click="external_link('/vote/'+doc.slug+'?mode=doc_options') " )
-					i.fa.fa-edit(href="", ng-click="external_link('/vote/'+doc.slug+'?mode=editor') " )
-					i.fa.fa-unlock(href="", ng-click="external_link('/vote/'+doc.slug+'?secret='+doc.secret) " )
-					i.fa.fa-database(href="", ng-click="external_link('/api/v1/vote/'+doc.slug) " ) 
-					// {{doc._id}}
-				
-				
-					i.fa.fa-trash.delete_document(href="", ng-click="delete_document(doc) " )
-	
-	h3 inclure députés  : 
-		input(type="checkbox" name="preset_vote.inc_depute" ng-model="preset_vote.inc_depute" )
-	h3 inclure sénateurs  : 
-		input(type="checkbox" name="preset_vote.inc_senateurs" ng-model="preset_vote.inc_senateurs" )
-	
+					td {{doc.created | date }}
+					
+					td 
+						i.fa.fa-cogs(href="", ng-click="external_link('/vote/'+doc.slug+'?mode=doc_options') " )
+						i.fa.fa-edit(href="", ng-click="external_link('/vote/'+doc.slug+'?mode=editor') " )
+						i.fa.fa-unlock(href="", ng-click="external_link('/vote/'+doc.slug+'?secret='+doc.secret) " )
+						i.fa.fa-database(href="", ng-click="external_link('/api/v1/vote/'+doc.slug) " ) 
+						// {{doc._id}}
+						i.fa.fa-trash.delete_document(href="", ng-click="delete_document(doc) " ) delete
+		
+		h3 inclure députés  : 
+			input(type="checkbox" name="preset_vote.inc_depute" ng-model="preset_vote.inc_depute" )
+		h3 inclure sénateurs  : 
+			input(type="checkbox" name="preset_vote.inc_senateurs" ng-model="preset_vote.inc_senateurs" )
+		
 
 
-	div(ng-repeat="s in preset_vote.s")
-		p {{s}} preset vote : 
-		select(ng-model="preset_vote.sigles[s]")
-			option(ng-repeat="opt in preset_vote.opt" ng-value="opt") {{opt}}
-		// input(type="text" name="preset_vote.sigles[s]" ng-model="preset_vote.sigles[s]" )
-	
-	h3 preset : {{preset_vote}}
-	a.btn_big.btn_newdoc(title="{{render_config.i18n.CUSTOM.VOTE.create_new}}" ng-click="create_vote()" ) {{render_config.i18n.CUSTOM.VOTE.create_new}}
+		div(ng-repeat="s in preset_vote.s")
+			p {{s}} preset vote : 
+			select(ng-model="preset_vote.sigles[s]")
+				option(ng-repeat="opt in preset_vote.opt" ng-value="opt") {{opt}}
+			// input(type="text" name="preset_vote.sigles[s]" ng-model="preset_vote.sigles[s]" )
+		
+		h3 preset : {{preset_vote}}
+		a.btn_big.btn_newdoc(title="{{render_config.i18n.CUSTOM.VOTE.create_new}}" ng-click="create_vote()" ) {{render_config.i18n.CUSTOM.VOTE.create_new}}
 

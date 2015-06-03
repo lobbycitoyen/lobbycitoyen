@@ -52,7 +52,7 @@ module.exports = function(app, passport, auth) {
 
 
     app.get('/vote/:slug',                   voteCtrl.single);
-
+    app.get('/widget/:type/:slug',                   voteCtrl.single);
 
 
 
