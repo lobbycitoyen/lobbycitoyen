@@ -540,7 +540,7 @@ exports.edit  = function(req, res) {
 	 var include_citoyen = false
 
 
-	if(req.body.inc_depute && req.body.inc_depute == 'false' && req.body.inc_senateurs && req.body.inc_senateurs == 'false' ){
+	if(req.body.inc_depute && req.body.inc_depute == 'false' && req.body.inc_senateur && req.body.inc_senateur == 'false' ){
 		// console.log('false')
 			var doc = new Vote(new_doc);
 			doc.user = user;
@@ -573,7 +573,7 @@ exports.edit  = function(req, res) {
 			if(req.body.inc_depute == 'true'){
 				file = 'dumps/nosdeputes.fr_deputes_en_mandat2015-06-04.json'
 			}
-			if(req.body.inc_senateurs == 'true'){
+			if(req.body.inc_senateur == 'true'){
 				file = 'dumps/nossenateurs.fr_senateurs_en_mandat2015-06-04.json'
 			}
 			console.log(file)
@@ -584,7 +584,7 @@ exports.edit  = function(req, res) {
 			if(req.body.inc_depute== 'true')	{
 				var objs = body.deputes
 			}
-			if(req.body.inc_senateurs== 'true')	{	
+			if(req.body.inc_senateur== 'true')	{	
 				var objs = body.senateurs
 			}
 
