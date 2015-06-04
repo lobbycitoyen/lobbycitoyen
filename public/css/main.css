@@ -2,31 +2,47 @@
 
 
 ul{margin:0; padding:0;}
-.voter{
-	padding:1%;
-	background:#dadada;
+.voter {
+    background: rgb(236, 240, 241) none repeat scroll 0 0;
+    border-radius: 7px;
+    margin-bottom: 2%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+    min-height: 290px;
+    padding: 6px;
+    width: 18%;
+}
+
+ .voter.group_LES-REP{
+ 	border-top:4px solid #4aa3df;
+ }
+  .voter.group_SRC,   .voter.group_SOC{
+ 	border-top:4px solid #c93c72;
  }
 
- .voter.group_UMP{
- 	border-top:4px solid blue;
+  .voter.group_UDI{
+ 	border-top:4px solid #5022ba;
  }
-  .voter.group_SRC{
- 	border-top:4px solid red;
+   .voter.group_CRC{
+ 	border-top:4px solid #ce2913;
  }
-
-.voter.position_Pour{
- 	background: green;
- }
-.voter.position_Contre{
- 	background: red;
+   .voter.group_ECO{
+ 	border-top:4px solid #16a085;
  }
 
-.voter.position_Abstention{
- 	background: #fff;
+.voter.position_Pour h3{
+ 	color: #27ae60;
+ }
+.voter.position_Contre h3{
+ 	color: #c0392b;
  }
 
-.voter.position_Inconnue{
- 	background: #dadada;
+.voter.position_Abstention h3{
+ 	color: #fff;
+ }
+
+.voter.position_Inconnue h3{
+ 	color: #dadada;
  }
 
 
@@ -39,24 +55,47 @@ ul{margin:0; padding:0;}
 
  .filters, .counts{
 list-style:none;
-	border:1px solid #ccc;
 	margin:1% 0;
-	padding:1%;
  }
 
 
 
  .filter-btns{
-
+ 	list-style-type:none;
  }
 
-
+.filter-btns li {
+    border-radius: 3px;
+    float: left;
+    list-style: outside none none;
+    margin: 0 9px 0 0;
+    background:#95a5a6;
+    text-align:center;
+}
+.filter-btns li:hover {
+ 
+    background:#ecf0f1;
+   
+}
 
  .filter-btns li a{
- 	border:1px solid #ccc;
 	margin:1% 0;
+	padding:3px;
+	color:#000;
  }
 
+.vote-btn{
+	  background:#e67e22;
+	  margin-right:12px;
+	padding:3px;
+	color:#000;
+	    list-style: outside none none;
+ border-radius: 3px;
+	float:left;
+}
+.vote-btn a{
+	color:#000;
+}
 
 
 .charttotal{
@@ -87,6 +126,16 @@ list-style:none;
 	text-align:center;
 }
 
+
+.left{
+	float:left;
+	width: 25%;
+	margin-right: 2%;
+}
+.right{
+	float:left;
+	width: 55%;
+}
 
 footer{
 	background:#000;

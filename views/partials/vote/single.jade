@@ -68,19 +68,25 @@ div(id="fb-root")
 		// div(id="hemicycle" style="z-index:0;margin-left:35px;margin-right:auto;height:620px;")
 		
 
-		div()
+		div
 			h1 {{vote.title}}
 			
 			a(ng-if="is_owner" ng-click="editor_('title')") edit title
 			div(ng-if="ui.editor['title'] == true")
 				input(ng-model="vote.title")
 				a(ng-click="edit('vote_title', vote._id, vote.title)" )  save title
-			h3 {{vote.updated_moment}} ({{vote.updated}})
+			h3 {{vote.updated_moment}} 
+			// ({{vote.updated}})
 
 			div.jumbotron
 				
 			
 				h4 vote prévu {{vote.closetime_moment}}, le {{vote.closetime}}
+				a(ng-if="is_owner" ng-click="editor_('closetime')") edit closetime
+				div(ng-if="ui.editor['closetime'] == true")
+					textarea(ng-model="vote.closetime")
+					a(ng-click="edit('closetime', vote._id, vote.closetime)" )  closetime
+
 
 				h4(ng-bind-html="vote.excerpt") 
 				a(ng-if="is_owner" ng-click="editor_('excerpt')") edit excerpt
@@ -108,6 +114,34 @@ div(id="fb-root")
 			
 
 			div.counts
+
+
+				div.count_senateurs(ng-if="ui.count.all_senateurs.total > 0")
+					h3 Vote des sénateurs  (total: {{ui.count.all_senateurs.total}})
+					p dont :
+						span.success pour : {{ui.count.all_senateurs.pour}} ({{ (100 * ui.count.all_senateurs.pour / ui.count.all_senateurs.total) | number:0}}%)
+						span  | contre : {{ui.count.all_senateurs.contre}} ({{ (100 * ui.count.all_senateurs.contre / ui.count.all_senateurs.total) | number:0}}%)
+						span  | abstention {{ui.count.all_senateurs.abstention}} ({{ (100 * ui.count.all_senateurs.abstention / ui.count.all_senateurs.total) | number:0}}%)
+						span  | inconnue {{ui.count.all_senateurs.inconnue}} ({{ (100 * ui.count.all_senateurs.inconnue / ui.count.all_senateurs.total) | number:0}}%)
+					.progress
+
+						.progress-bar.progress-bar-success.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_senateurs.pour / ui.count.all_senateurs.total) | number:0}}%")
+										span.srd-only {{(100*ui.count.all_senateurs.pour / ui.count.all_senateurs.total) | number:0}}% pour 
+									
+						.progress-bar.progress-bar-danger.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_senateurs.contre / ui.count.all_senateurs.total) | number:0}}%")
+							span.srd-only {{(100*ui.count.all_senateurs.contre / ui.count.all_senateurs.total) | number:0}}% contre 
+						
+						.progress-bar.progress-bar-warning.progress-bar-striped(style="min-width:2em; max-width:90%; width:{{(100*ui.count.all_senateurs.abstention / ui.count.all_senateurs.total) | number:0}}%")
+							span.srd-only {{(100*ui.count.all_senateurs.abstention / ui.count.all_senateurs.total) | number:0}}% abstention 
+						
+					// .progress-bar.progress-bar-warning.progress-bar-striped(style="width:{{(100*ui.count.all_senateurs.inconnue / ui.count.all_senateurs.total) | number:0}}%")
+						span.srd-only {{(100*ui.count.all_senateurs.inconnue / ui.count.all_senateurs.total) | number:0}}% inconnue
+
+
+
+
+
+
 				div.count_deputes(ng-if="ui.count.all_deputes.total > 0")
 					h3 Vote des deputés  (total: {{ui.count.all_deputes.total}})
 					p dont :
@@ -152,10 +186,13 @@ div(id="fb-root")
 							span.srd-only {{(100*ui.count.all_citoyens.abstention / ui.count.all_citoyens.total) | number:0}}% abstention 
 
 
-
+			div.search
+				h4 Recherche
+				input(ng-model="ui.lookup")
 
 			div.filters
-				h2 filtrer : 
+				h4 Filtres
+
 
 				
 				// div(ng-repeat="t in typeslist")
@@ -165,28 +202,24 @@ div(id="fb-root")
 				ul.filter-btns(ng-if="ui.count.all_senateurs.total > 0")
 
 					li 
-						input(ng-model="ui.lookup")
-
-					li 
 						a(ng-click="filter_('','', '')") aucun filtre
 					li 
-						a(ng-click="filter_( 'senateur', '', '')") Deputes seulement
+						a(ng-click="filter_( 'senateur', '', '')") Sénateur seulement
 					
 					ul 
 						li 
-							a(ng-click="filter_('senateur','Pour','')") - qui sont pour
+							a(ng-click="filter_('senateur','Pour','')") Pour
 						li 
-							a(ng-click="filter_('senateur','Contre','')") - qui sont contre
+							a(ng-click="filter_('senateur','Contre','')") Contre
 						li 
-							a(ng-click="filter_('senateur','Abstention','')") - qui s'abstiennent
+							a(ng-click="filter_('senateur','Abstention','')") Abstention
 						li 
-							a(ng-click="filter_('senateur','Inconnue','')") - Position inconnue
+							a(ng-click="filter_('senateur','Inconnue','')")  Inconnue
 
-
+					
 				ul.filter-btns(ng-if="ui.count.all_deputes.total > 0")
 
-					li 
-						input(ng-model="ui.lookup")
+					
 
 					li 
 						a(ng-click="filter_('','', '')") aucun filtre
@@ -195,9 +228,9 @@ div(id="fb-root")
 					
 					ul 
 						li 
-							a(ng-click="filter_('depute','Pour','')") - qui sont pour
+							a(ng-click="filter_('depute','Pour','')") Pour
 						li 
-							a(ng-click="filter_('depute','Contre','')") - qui sont contre
+							a(ng-click="filter_('depute','Contre','')") Contre
 						li 
 							a(ng-click="filter_('depute','Abstention','')") - qui s'abstiennent
 						li 
@@ -219,32 +252,33 @@ div(id="fb-root")
 				h4(ng-if="ui.count.current > 1") {{ui.count.current}} votants affichés sur un total de {{ui.count.all}} votants
 
 
-			div.row
-				div(ng-repeat="voter in vote.voters" class="col-md-4 voter type_{{voter.type}} group_{{voter.group}} byme_{{voter.byme}} position_{{voter.position}}" ng-if="voter.visible === true")
+		div
+			div(ng-repeat="voter in vote.voters" class="col-md-4 voter type_{{voter.type}} group_{{voter.group}} byme_{{voter.byme}} position_{{voter.position}}" ng-if="voter.visible === true")
 
+				div.left
 					img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.slug}}/60")
 
 					img.voter_pic(ng-if="voter.type == 'senateur'" ng-src="http://www.nossenateurs.fr/senateur/photo/{{voter.slug}}/60")
-					
-
-					p.name {{voter.name}}  
-						
+				div.right
+					h4.name {{voter.name}} 
+					p  {{voter.group}} 
+					p  {{voter.nom_circo}}
 					p(ng-if="voter.twitter_account")
 						a(href="https://twitter.com/intent/tweet?hashtags=Senat&text=Mobilisation citoyenne à propos du vote {{vote.title}} @{{voter.twitter_account}} http://lobbycitoyen.fr/vote/{{vote.slug}}") Interpeller @{{voter.twitter_account}} sur Twitter 
-
-					h3	position: {{voter.position}}
-					p	circonscription: {{voter.nom_circo}}
-					p	type: {{voter.type}}
+				div
+					h3	vote {{voter.position}}
+					// p	circonscription: 
+					// p	type: {{voter.type}}
 					// p	place hemicycle : {{voter.place_en_hemicycle}}
-					p	group : {{voter.group}}
+					// p	group : {{voter.group}}
 					// p	note : {{voter.note}} 
 						input(ng-model="voter.note" type="text")
 						a() save
-					p	subgroup: {{voter.subgroup}}
+					// p	subgroup: {{voter.subgroup}}
 					div.action
-						p changer vote : 
+						p Editer vote : 
 						ul(ng-repeat="p in ui.positions_available" )
-							li 
+							li.vote-btn
 								a(ng-click="edit('voter', voter, p)" )  {{p}}
 
 

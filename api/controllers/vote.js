@@ -427,6 +427,10 @@ exports.edit  = function(req, res) {
 						doc[req.body.type] = req.body.value
 
 				}
+				if(req.body.type && (req.body.type =='closetime' || req.body.type =='closetime') ) {
+						doc[req.body.type] = req.body.value
+
+				}
 				if(req.body.type && req.body.type =='new_voter'){
 						
 						/// CHECK NOT ALREADY IN ARRAY
