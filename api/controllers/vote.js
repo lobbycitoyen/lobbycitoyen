@@ -176,9 +176,8 @@ var app;
 					out.vote.bypositionbygroup = {}
 
 					_.each(groupslist, function(g){
-						var o =  new Object({Pour:0, Contre:0, Inconnue:0, Abstention:0})
 						
-						out.vote.bypositionbygroup[g] = o
+						out.vote.bypositionbygroup[g] = new Object({Pour:0, Contre:0, Inconnue:0, Abstention:0})
 						
 
 					})

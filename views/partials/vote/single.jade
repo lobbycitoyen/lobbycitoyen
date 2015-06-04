@@ -9,17 +9,20 @@
 				
 			div.chartall
 				div.charttotal
-					h3 Répartion total	
+					h3 Répartition total ({{ui.count.all_senateurs.total}} sénateurs) 
 					div
-						pie-chart(data="data['all']" options="options")
+						pie-chart(data="data_all" options="options")
 			
 				div.chartgroup
-					h3 Répartion par groupe parlementaire:
+					h3 Répartition par groupe parlementaire:
 					div.group(ng-repeat="group in groupslist track by $index") 
 					
 						div
 							pie-chart(data="data[group]" options="options")
 						h4 Groupe {{group}}
+
+				div.widget_footer
+					p Lobbycitoyen.fr
 				
 	
 

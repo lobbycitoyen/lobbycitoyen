@@ -46,7 +46,7 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		$scope.render_config = new Object()
       	$scope.render_config.i18n =  $locale;
       	$scope.i18n                       = $locale;
-      	$scope.groupslist = ['UMP', 'SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
+      	$scope.groupslist = ['UMP','SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
 
 
       	$scope.ui.iswidget = $routeParams.widget
@@ -96,51 +96,57 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 					 $scope.vote.updated_moment = 'Mis à jour il y a ' +moment($scope.vote.updated).fromNow(); // 4 years ago()
 					 $scope.vote.closetime_moment = '' +moment($scope.vote.closetime).fromNow(); // 4 years ago()
 
-				    $scope.byposition = $scope.vote.byposition
-				    $scope.bypositionbygroup = $scope.vote.bypositionbygroup
+					    $scope.byposition = $scope.vote.byposition
+					    $scope.bypositionbygroup = $scope.vote.bypositionbygroup
+
+						$scope.options = {thickness: 100};
 
 
-
-					$scope.colors = {}
+						$scope.colors = {}
 						$scope.colors.Pour= 'green'
 						$scope.colors.Contre= 'red'
 						$scope.colors.Abstention= 'orange'
 						$scope.colors.Inconnue= 'grey'
 
-					$scope.data = {}
-					$scope.data.all = []
+					$scope.data = []
+					var data_all = []
+					var data = []
+
 
 					
 
 					_.each(_.keys($scope.bypositionbygroup), function(k){
 					
-						$scope.data[k] = []
+						data[k] = []
 						_.each(_.keys($scope.bypositionbygroup[k]), function(p){
 
+							console.log(k,p)
 
-							 var v = _.filter($scope.vote.voters, function(v){ return v.group == k && (v.position == p || p == '')  }).length
+							var v = 0
+							v = _.filter($scope.vote.voters, function(v){ return v.group == k && (v.position == p)  }).length
 
 							var b = {"label": p , "value": v, color: $scope.colors[p]}
-							$scope.data[k].push(b)	
+							data[k].push(b)	
 						})
 					})
-
 
 					
 
 
-					for (var key in  $scope.byposition) {
+					_.each( _.keys($scope.byposition)  , function(key){
 		   					var obj = $scope.byposition[key];
-		      				var b = {"label":key , "value": obj, color: $scope.colors[key]}
-							$scope.data.all.push(b)	
-					}
+		   					//console.log(obj)
+		      				var b = { "label":key , "value": parseInt(obj), "color": $scope.colors[key]}
+							data_all.push(b)	
+					})
 
-						
+					//console.log(data_all)
+					$scope.data_all = data_all
+					$scope.data = data
 
 
   
   
-$scope.options = {thickness: 100};
 
 
 
@@ -160,6 +166,7 @@ $scope.options = {thickness: 100};
 
 
 					counts.all_deputes = new Object({'total':0, 'pour':0, 'contre':0, 'abstention':0, 'inconnue':0})
+					counts.all_senateurs = new Object({'total':0, 'pour':0, 'contre':0, 'abstention':0, 'inconnue':0})
 					counts.all_citoyens = new Object({'total':0, 'pour':0, 'contre':0, 'abstention':0, 'inconnue':0})
 					
 
@@ -168,6 +175,12 @@ $scope.options = {thickness: 100};
 					counts.all_deputes.contre 		=  $scope.getlength('depute', 'Contre') 
 					counts.all_deputes.abstention 	=  $scope.getlength('depute', 'Abstention') 
 					counts.all_deputes.inconnue 	=  $scope.getlength('depute', 'Inconnue') 
+
+					counts.all_senateurs.total 		=  $scope.getlength('senateur', '') 
+					counts.all_senateurs.pour 		=  $scope.getlength('senateur', 'Pour') 
+					counts.all_senateurs.contre 		=  $scope.getlength('senateur', 'Contre') 
+					counts.all_senateurs.abstention 	=  $scope.getlength('senateur', 'Abstention') 
+					counts.all_senateurs.inconnue 	=  $scope.getlength('senateur', 'Inconnue') 
 				
 					counts.all_citoyens.total 		=  $scope.getlength('citoyen', '')  
 					counts.all_citoyens.pour 		=  $scope.getlength('citoyen', 'Pour') 
@@ -232,7 +245,7 @@ $scope.options = {thickness: 100};
 		if(oldValue && newValue && $scope._){
 				$scope._.each($scope.vote.voters, function(v,i){
 						v.visible = false
-						if( (   ( v['name'].search(newValue) !== -1 || v['nom_circo'].search(newValue) !== -1 || v['group'].search(newValue) !== -1) &&  v.type=='depute')  || newValue =='' ||  newValue =='Recherche'){
+						if( (   ( v['name'].search(newValue) !== -1 || v['nom_circo'].search(newValue) !== -1 || v['group'].search(newValue) !== -1) &&  (v.type=='depute' || v.type=='senateur')  )  || newValue =='' ||  newValue =='Recherche'){
 							v.visible = true
 						}
 				});
