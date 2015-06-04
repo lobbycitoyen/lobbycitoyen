@@ -32,7 +32,7 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
       $scope.preset_vote.inc_senateurs = 'false';
 
       $scope.preset_vote.opt = ['Pour','Contre', 'Abstention', 'Inconnue']
-      $scope.preset_vote.s = ['UMP', 'SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
+      $scope.preset_vote.s = ['LES-REP', 'SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
       $scope.preset_vote.sigles = {}
 
       $scope.ui = {}
@@ -91,7 +91,7 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
     $scope.create_vote = function(){
 
 
-      var preset = new Object({'inc_senateurs': ''+$scope.preset_vote.inc_senateurs, 'inc_depute':''+$scope.preset_vote.inc_depute})
+      var preset = new Object({'inc_citoyen': ''+$scope.preset_vote.inc_citoyen, 'inc_senateurs': ''+$scope.preset_vote.inc_senateur, 'inc_depute':''+$scope.preset_vote.inc_depute})
       
     _.each($scope.preset_vote.s, function(s){
            preset[s] = $scope.preset_vote.sigles[s]

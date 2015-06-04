@@ -531,13 +531,17 @@ exports.edit  = function(req, res) {
 	 new_doc.doc_options = new Array()
 	 var text_size = _.size(raw_content)-1;
 	 var voter_name  = 'senateur_name_'+Math.random()
+	 var include_senateur = false
+	 var include_depute = false
+	 var include_citoyen = false
 
 
 	if(req.body.inc_depute && req.body.inc_depute == 'false' && req.body.inc_senateurs && req.body.inc_senateurs == 'false' ){
 		// console.log('false')
-		var doc = new Vote(new_doc);
+			var doc = new Vote(new_doc);
 			doc.user = user;
 		   	doc.username =user.username;
+		   	doc.include_citoyen = true
 				
 			//doc.populate('user', 'name username image_url').exec(function(err,doc) {
 				doc.save(function(err,doc) {
@@ -562,12 +566,11 @@ exports.edit  = function(req, res) {
 			
 
 			var file = '';
-			if(req.body.inc_depute == 'true')	{
+			if(req.body.inc_depute == 'true'){
 				file = 'dumps/nosdeputes.fr_deputes_en_mandat2015-06-04.json'
 			}
-			if(req.body.inc_senateurs == 'true')	{
+			if(req.body.inc_senateurs == 'true'){
 				file = 'dumps/nossenateurs.fr_senateurs_en_mandat2015-06-04.json'
-
 			}
 			console.log(file)
 
@@ -577,25 +580,31 @@ exports.edit  = function(req, res) {
 			if(req.body.inc_depute== 'true')	{
 				var objs = body.deputes
 			}
-			if(req.body.inc_senateurs== 'true')	{
-				
+			if(req.body.inc_senateurs== 'true')	{	
 				var objs = body.senateurs
-						}
+			}
 
 			  _.each(objs, function(obj, i){
 			  //	console.log(body.deputes[i])
 
 			var pos_preset = 'Inconnue'
 			var type = ''
+			
+
+			if(req.body.inc_citoyen && req.body.inc_citoyen == 'true')	{
+				new_doc.include_citoyen = true
+			}
 
 			if(req.body.inc_depute && req.body.inc_depute == 'true')	{
 				var depute = objs[i].depute
 				type = 'depute'
+				new_doc.include_depute = true
 			}
 			if(req.body.inc_senateurs && req.body.inc_senateurs == 'true')	{
 				
 				var depute = objs[i].senateur
 				type = 'senateur'
+				new_doc.include_senateur = true
 
 			}
 
@@ -630,7 +639,7 @@ exports.edit  = function(req, res) {
 
 
 
-			  var doc = new Vote(new_doc);
+			var doc = new Vote(new_doc);
 			doc.user = user;
 		   	doc.username =user.username;
 				

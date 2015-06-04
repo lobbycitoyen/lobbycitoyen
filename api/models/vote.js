@@ -153,6 +153,21 @@ var VoteSchema = new Schema({
         default: 'actif',
         trim: true
     },
+    include_senateur: {
+        type: Boolean,
+        default: false,
+        trim: true
+    },
+    include_depute: {
+        type: Boolean,
+        default: false,
+        trim: true
+    },
+    include_citoyen: {
+        type: Boolean,
+        default: true,
+        trim: true
+    },
     title: {
         type: String,
         default: 'vote titre',
