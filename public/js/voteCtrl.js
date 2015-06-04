@@ -46,11 +46,12 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		$scope.render_config = new Object()
       	$scope.render_config.i18n =  $locale;
       	$scope.i18n                       = $locale;
-      	$scope.groupslist = ['UMP','SRC','SOC', 'SOCV', 'UDI','CRC','CRC-SPG','ECO','UC','NI']
+      	$scope.groupslist = ['LES-REP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI']
+      	$scope.typeslist = ['senateur', 'depute','citoyen']
 
 
-      	$scope.ui.iswidget = $routeParams.widget
-      	$scope.ui.widgettype = $routeParams.widgettype
+      	$scope.ui.iswidget 		= $routeParams.widget
+      	$scope.ui.widgettype 	= $routeParams.widgettype
 
 
 		
@@ -257,11 +258,15 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		console.log('newsback')
 		console.log(data);
 		if(data.slug == $scope.vote.slug && $scope.ui.sockets_refresh == true){
+			
+			alert('refresh page..')
+			/*
 			$scope.vote.voters = data.voters;
 			$scope.vote.updated = data.updated
 		
 
 			$scope.apply_filters()
+			*/
 		}		
 	})
 

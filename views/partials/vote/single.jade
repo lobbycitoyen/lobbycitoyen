@@ -15,7 +15,7 @@
 			
 				div.chartgroup
 					h3 Répartition par groupe parlementaire:
-					div.group(ng-repeat="group in groupslist track by $index") 
+					div.group(ng-repeat="group in groupslist track by $index" ng-if="data[group]") 
 					
 						div
 							pie-chart(data="data[group]" options="options")
@@ -93,7 +93,7 @@
 
 		
 
-			div.citoyen_action
+			// div.citoyen_action
 				div(ng-hide="has_voted" ) 
 					a.btn.btn-primary(ng-click="edit('new_voter', vote._id, 'Pour')" )  je vote Pour !
 					a(ng-click="edit('new_voter', vote._id, 'Contre')" )  je vote Contre !
@@ -102,10 +102,6 @@
 					a.btn.btn-primary(ng-click="filter_('','', user_logged.username)") - voir mon vote
 			
 
-
-			
-				
-				
 			
 
 			div.counts
@@ -157,10 +153,37 @@
 
 			div.filters
 				h2 filtrer : 
+
+				
+				// div(ng-repeat="t in typeslist")
+					h2 {{t}}
+
+
+				ul.filter-btns(ng-if="ui.count.all_senateurs.total > 0")
+
+					li 
+						input(ng-model="ui.lookup")
+
+					li 
+						a(ng-click="filter_('','', '')") aucun filtre
+					li 
+						a(ng-click="filter_( 'senateur', '', '')") Deputes seulement
+					
+					ul 
+						li 
+							a(ng-click="filter_('senateur','Pour','')") - qui sont pour
+						li 
+							a(ng-click="filter_('senateur','Contre','')") - qui sont contre
+						li 
+							a(ng-click="filter_('senateur','Abstention','')") - qui s'abstiennent
+						li 
+							a(ng-click="filter_('senateur','Inconnue','')") - Position inconnue
+
+
 				ul.filter-btns(ng-if="ui.count.all_deputes.total > 0")
 
 					li 
-							input(ng-model="ui.lookup")
+						input(ng-model="ui.lookup")
 
 					li 
 						a(ng-click="filter_('','', '')") aucun filtre
@@ -196,10 +219,15 @@
 			div.row
 				div(ng-repeat="voter in vote.voters" class="col-md-4 voter type_{{voter.type}} group_{{voter.group}} byme_{{voter.byme}} position_{{voter.position}}" ng-if="voter.visible === true")
 
-					// img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.twitter_account}}/60")
-					p.name {{voter.name}}  
-						a(href="http://twitter.com/?tweet=hey@{{voter.twitter_account}}") @ {{voter.twitter_account}}
+					img.voter_pic(ng-if="voter.type == 'depute'" ng-src="http://www.nosdeputes.fr/depute/photo/{{voter.slug}}/60")
 
+					img.voter_pic(ng-if="voter.type == 'senateur'" ng-src="http://www.nossenateurs.fr/senateur/photo/{{voter.slug}}/60")
+					
+
+					p.name {{voter.name}}  
+						
+					p(ng-if="voter.twitter_account")
+						a(href="https://twitter.com/intent/tweet?text=Mobilisation citoyenne à propos du vote {{vote.title}} @{{voter.twitter_account}} http://lobbycitoyen.fr/vote/{{vote.slug}}") Interpeller sur Twitter @ {{voter.twitter_account}} 
 
 					h3	position: {{voter.position}}
 					p	circonscription: {{voter.nom_circo}}

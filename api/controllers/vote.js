@@ -41,7 +41,7 @@ nconf.argv().env().file({file:'config.json'});
 var chalk = require('chalk');
 var app;
 
-				var groupslist = new Array('UMP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
+				var groupslist = new Array('LES-REP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
 
 
 //var mail= require('./../../sendmail.js');
@@ -177,7 +177,7 @@ var app;
 
 					_.each(groupslist, function(g){
 						
-						out.vote.bypositionbygroup[g] = new Object({Pour:0, Contre:0, Inconnue:0, Abstention:0})
+						// 
 						
 
 					})
@@ -185,6 +185,11 @@ var app;
 					_.each(doc.voters, function(mk) {
 						console.log(out.vote.bypositionbygroup[mk.group])
 						out.vote.byposition[mk.position] = parseInt(out.vote.byposition[mk.position])+1
+
+						// create array of null
+						if(!out.vote.bypositionbygroup[mk.group]){
+							out.vote.bypositionbygroup[mk.group] = new Object({Pour:0, Contre:0, Inconnue:0, Abstention:0})
+						}
 
                   	
         			})
@@ -558,10 +563,10 @@ exports.edit  = function(req, res) {
 
 			var file = '';
 			if(req.body.inc_depute == 'true')	{
-				file = 'dumps/nosdeputes.fr_deputes2015-06-01.json'
+				file = 'dumps/nosdeputes.fr_deputes_en_mandat2015-06-04.json'
 			}
 			if(req.body.inc_senateurs == 'true')	{
-				file = 'dumps/nossenateurs.fr_senateurs2015-06-01.json'
+				file = 'dumps/nossenateurs.fr_senateurs_en_mandat2015-06-04.json'
 
 			}
 			console.log(file)
@@ -614,7 +619,7 @@ exports.edit  = function(req, res) {
 			  	}
 		
 
-			  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':depute.place_en_hemicycle,'nom_circo': depute.nom_circo,'subgroup':depute.parti_ratt_financier, 'group':depute.groupe_sigle, 'twitter_account': twitter_account, 'username':user.username, 'name': depute.nom, 'type': type, 'position':pos_preset} )
+			  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':depute.place_en_hemicycle,'nom_circo': depute.nom_circo,'subgroup':depute.parti_ratt_financier, 'group':depute.groupe_sigle, 'twitter_account': twitter_account, 'username':user.username, 'slug': depute.slug ,'name': depute.nom, 'type': type, 'position':pos_preset} )
 				new_doc.voters.push(voter_b)
 				
 			  		
