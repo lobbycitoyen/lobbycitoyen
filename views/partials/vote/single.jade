@@ -12,8 +12,8 @@ div(id="fb-root")
 			h4(ng-bind-html="vote.excerpt") 
 
 			
-			a(href="https://twitter.com/share" class="twitter-share-button" data-url="#{root_url}:#{port}/vote/{{vote.slug}}" data-text="mobilisation sur le vote {{vote.title}}" data-via="tom_plays") Partager sur Twitter
-			div(class="fb-share-button" data-href="#{root_url}:#{port}/vote/{{vote.slug}}" data-layout="button_count") share
+			a(href="https://twitter.com/share" class="twitter-share-button" data-url="#{root_url}/vote/{{vote.slug}}" data-text="mobilisation sur le vote {{vote.title}}" data-via="tom_plays") Partager sur Twitter
+			div(class="fb-share-button" data-href="#{root_url}/vote/{{vote.slug}}" data-layout="button_count") share
 			div.chartall
 				div.charttotal
 					h3 Répartition total ({{ui.count.all_senateurs.total}} sénateurs) 
@@ -22,8 +22,8 @@ div(id="fb-root")
 			
 				div.chartsgroup
 					h3 Répartition par groupe parlementaire:
-					div.group.chartgroup(class="group_{{$index}}" ng-repeat="group in groupslist track by $index" ng-if="data[group]") 
-						h4 Groupe {{group}}
+					div.group.chartgroup(class="group_{{$index}} group_{{group}}" ng-repeat="group in groupslist track by $index" ng-if="data[group]") 
+						h4 {{group}}
 						div
 							pie-chart(data="data[group]" options="options_small")
 						
@@ -184,7 +184,7 @@ div(id="fb-root")
 
 
 			div.search
-				h4 Recherche
+				// h4 Recherche
 				input(ng-model="ui.lookup")
 
 			div.filters

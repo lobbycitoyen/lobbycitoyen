@@ -106,66 +106,67 @@ voter.position = value
 					 $scope.vote.updated_moment = 'Mis à jour il y a ' +moment($scope.vote.updated).fromNow(); // 4 years ago()
 					 $scope.vote.closetime_moment = '' +moment($scope.vote.closetime).fromNow(); // 4 years ago()
 
-if($scope.vote.byposition && $scope.vote.bypositionbygroup){
-	 $scope.byposition = $scope.vote.byposition
-					    $scope.bypositionbygroup = $scope.vote.bypositionbygroup
+						if($scope.vote.byposition && $scope.vote.bypositionbygroup){
+							 $scope.byposition = $scope.vote.byposition
+											    $scope.bypositionbygroup = $scope.vote.bypositionbygroup
 
-						$scope.options = {thickness: 70};
-						$scope.options_small = {thickness: 30};
-
-
-						$scope.colors = {}
-						$scope.colors.Pour= 'green'
-						$scope.colors.Contre= 'red'
-						$scope.colors.Abstention= 'orange'
-						$scope.colors.Inconnue= 'grey'
-
-						$scope.data = []
-						var data_all = []
-						var data = []
+												$scope.options = {thickness: 70};
+												$scope.options_small = {thickness: 20, height:300};
 
 
-					
 
-					_.each(_.keys($scope.bypositionbygroup), function(k){
-					
-						data[k] = []
-						_.each(_.keys($scope.bypositionbygroup[k]), function(p){
+												$scope.colors = {}
+												$scope.colors.Pour=  '#27ae60';
+												$scope.colors.Contre= '#c0392b'
+												$scope.colors.Abstention= '#ecf0f1'
+												$scope.colors.Inconnue= '#bdc3c7'
 
-							console.log(k,p)
-
-							var v = 0
-							v = _.filter($scope.vote.voters, function(v){ return v.group == k && (v.position == p)  }).length
-
-							var b = {"label": p , "value": v, color: $scope.colors[p]}
-							data[k].push(b)	
-						})
-					})
-
-					
+												$scope.data = []
+												var data_all = []
+												var data = []
 
 
-					_.each( _.keys($scope.byposition)  , function(key){
-		   					var obj = $scope.byposition[key];
-		   					//console.log(obj)
-		      				var b = { "label":key , "value": parseInt(obj), "color": $scope.colors[key]}
-							data_all.push(b)	
-					})
+											
 
-					//console.log(data_all)
-					$scope.data_all = data_all
-					$scope.data = data
+											_.each(_.keys($scope.bypositionbygroup), function(k){
+											
+												data[k] = []
+												_.each(_.keys($scope.bypositionbygroup[k]), function(p){
 
-					_.each($scope.vote.voters, function(v,i){
-			          			v.visible = true;
-			          			v.byme = false;
-			          			if(v.type=='citoyen' && $scope.user_logged && $scope.user_logged.username == v.username){
-			          				v.byme = true;
-			          				$scope.has_voted = v;
+													console.log(k,p)
 
-			          			}
-			          })
-}
+													var v = 0
+													v = _.filter($scope.vote.voters, function(v){ return v.group == k && (v.position == p)  }).length
+
+													var b = {"label": p , "value": v, color: $scope.colors[p]}
+													data[k].push(b)	
+												})
+											})
+
+											
+
+
+											_.each( _.keys($scope.byposition)  , function(key){
+								   					var obj = $scope.byposition[key];
+								   					//console.log(obj)
+								      				var b = { "label":key , "value": parseInt(obj), "color": $scope.colors[key]}
+													data_all.push(b)	
+											})
+
+											//console.log(data_all)
+											$scope.data_all = data_all
+											$scope.data = data
+
+											_.each($scope.vote.voters, function(v,i){
+									          			v.visible = true;
+									          			v.byme = false;
+									          			if(v.type=='citoyen' && $scope.user_logged && $scope.user_logged.username == v.username){
+									          				v.byme = true;
+									          				$scope.has_voted = v;
+
+									          			}
+									          })
+						}
 					   
 					 var counts = {}
 

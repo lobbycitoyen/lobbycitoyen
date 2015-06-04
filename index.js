@@ -121,6 +121,9 @@ app.configure(function(){
         app.locals.root_url= nconf.get('ROOT_URL');
         app.locals.fbapp_id = nconf.get('FACEBOOK_ID');
         app.locals.port= nconf.get('PORT')
+
+
+       
         app.locals.socket_server_port= nconf.get('SOCKET_SERVER_PORT')
        
         // contruct STRING

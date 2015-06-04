@@ -13,21 +13,24 @@ ul{margin:0; padding:0;}
     width: 18%;
 }
 
- .voter.group_LES-REP{
+ .group_LES-REP{
  	border-top:4px solid #4aa3df;
  }
-  .voter.group_SRC,   .voter.group_SOC,   .voter.group_RDSE{
+  .group_SRC,   .group_SOC,  .group_RDSE{
  	border-top:4px solid #c93c72;
  }
 
-  .voter.group_UDI{
+  .group_UDI{
  	border-top:4px solid #5022ba;
  }
-   .voter.group_CRC{
+  .group_CRC{
  	border-top:4px solid #ce2913;
  }
-   .voter.group_ECO{
+  .group_ECO{
  	border-top:4px solid #16a085;
+ }
+ .group_NI{
+ 	border-top:4px solid #2c3e50;
  }
 
 .voter.position_Pour h3{
@@ -100,8 +103,8 @@ list-style:none;
 
 .charttotal{
 	    width:100%;
-		 float: left;
-		     border:1px solid #000;
+		float: left;
+		border:1px solid #ecf0f1;
 
 
 }
@@ -117,9 +120,12 @@ list-style:none;
 }
 .chartgroup{
 	 float: left;
-     width: 15%;
-     border-right:1px solid #000;
+     width: 14%;
+     border-right:1px solid #ecf0f1;
      padding:1%;
+}
+.chartgroup:last-child{	
+     border-right:none;
 }
 
 .chartgroup h4{
