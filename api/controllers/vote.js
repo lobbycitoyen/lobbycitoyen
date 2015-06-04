@@ -604,7 +604,7 @@ exports.edit  = function(req, res) {
 				type = 'depute'
 				new_doc.include_depute = true
 			}
-			if(req.body.inc_senateurs && req.body.inc_senateurs == 'true')	{
+			if(req.body.inc_senateur && req.body.inc_senateur == 'true')	{
 				
 				var depute = objs[i].senateur
 				type = 'senateur'
