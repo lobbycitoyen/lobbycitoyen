@@ -40,11 +40,9 @@ nconf.argv().env().file({file:'config.json'});
 
 var chalk = require('chalk');
 var app;
+var groupslist = new Array('LES-REP','SRC','RDSE','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
 
-				var groupslist = new Array('LES-REP','SRC','RDSE','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
 
-
-//var mail= require('./../../sendmail.js');
 
 
  	exports.home= function(req, res) {
@@ -402,60 +400,44 @@ exports.edit  = function(req, res) {
 			// TODO CHECK OWNERSHIP !!!
 
 
-				if(req.body.type && req.body.type =='voter'){
-						_.each(doc.voters , function (voter, i){
+			if(req.body.type && req.body.type =='voter'){
+					_.each(doc.voters , function (voter, i){
+							if(req.body.value && req.body.id && voter._id == req.body.id){
+								voter.position = req.body.value
+							}
+					})
+			}
 
-								if(req.body.value && req.body.id && voter._id == req.body.id){
-									voter.position = req.body.value
-								}
-								
+			if(req.body.type && req.body.type =='vote_title'){
+					doc.title 			 = req.body.value
+					var slug             =     S(doc.title).slugify().s 
+					doc.slug 			 = slug;
+			}
 
-						})
+			if(req.body.type && (req.body.type =='content' || req.body.type =='excerpt') ) {
+					doc[req.body.type] 	= req.body.value
+			}
+			if(req.body.type && (req.body.type =='closetime' || req.body.type =='closetime') ) {
+					doc[req.body.type] 	= req.body.value
+			}
+			if(req.body.type && req.body.type =='new_voter'){
+					/// CHECK NOT ALREADY IN ARRAY
+					var voter_citoyen  	= new Voter( {'user_id':req.user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':req.user.username, 'name': req.user.username,'type': 'citoyen', 'position':req.body.value} )
+					doc.voters.push(voter_citoyen)
+			}
+
+			out.is_owner 		= exports.test_owner_or_key(doc,req)
+			doc.updated = new Date().toJSON();
+			doc.save(function(err,doc) {
+				if (err) {
+					res.send(err)
+				} else {
+					out.vote = doc
+					out.vote.updated = new Date().toJSON();
+					out.userin 	= req.user.toObject()
+					res.json(out)
 				}
-
-				if(req.body.type && req.body.type =='vote_title'){
-						
-						doc.title = req.body.value
-						var slug             =     S(doc.title).slugify().s 
-						doc.slug = slug;
-
-								
-				}
-
-
-				if(req.body.type && (req.body.type =='content' || req.body.type =='excerpt') ) {
-						doc[req.body.type] = req.body.value
-
-				}
-				if(req.body.type && (req.body.type =='closetime' || req.body.type =='closetime') ) {
-						doc[req.body.type] = req.body.value
-
-				}
-				if(req.body.type && req.body.type =='new_voter'){
-						
-						/// CHECK NOT ALREADY IN ARRAY
-
-								var voter_citoyen  = new Voter( {'user_id':req.user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':req.user.username, 'name': req.user.username,'type': 'citoyen', 'position':req.body.value} )
-								doc.voters.push(voter_citoyen)
-
-				}
-
-				 out.is_owner 		= exports.test_owner_or_key(doc,req)
-				 doc.updated = new Date().toJSON();
-				 doc.save(function(err,doc) {
-						if (err) {
-							res.send(err)
-						} else {
-
-							out.vote = doc
-							out.vote.updated = new Date().toJSON();
-
-							out.userin 	= req.user.toObject()
-							res.json(out)
-
-						}
-
-				})
+			})
 
 		//	console.log(doc)
 		}
@@ -498,10 +480,8 @@ exports.edit  = function(req, res) {
 
  exports.init = function (req, res) {
  		console.log('req.body')
-
  		console.log(req.body)
 		 if(req.user){
-
 			var user = req.user
 		 }
 		 else{
@@ -509,167 +489,119 @@ exports.edit  = function(req, res) {
 			    user.provider = 'local';
 		 }
     	var message = null;
-   		/*user.save(function(err, user) {
-    	req.logIn(user, function(err) {    
-            
-        });
+   	 	var raw_title        =     'vote #'+Math.random()+'-'+Math.random();
+		var raw_content      =     'Contenu du vote';
+		var filtered_title   =     raw_title;
+		var filtered_content =     raw_content;
+		var slug             =     S(raw_title).slugify().s 
 
-*/
+		//var ar = new Object({'title':'bloue'+Math.random()})
+		var new_doc = new Object({'title':filtered_title, 'slug': slug, 'content': filtered_content, 'published':'public' })
 
-			
-
-	var raw_title        =     'vote #'+Math.random()+'-'+Math.random();
-	var raw_content      =     'Contenu du vote';
-	
-
- 	var filtered_title   =     raw_title;
-	var filtered_content =     raw_content;
-	var slug             =     S(raw_title).slugify().s 
-
-	
-
-	//var ar = new Object({'title':'bloue'+Math.random()})
-	var new_doc = new Object({'title':filtered_title, 'slug': slug, 'content': filtered_content, 'published':'public' })
-
-	 new_doc.voters = new Array()
-	 new_doc.doc_options = new Array()
-	 var text_size = _.size(raw_content)-1;
-	 var voter_name  = 'senateur_name_'+Math.random()
-	 var include_senateur = false
-	 var include_depute = false
-	 var include_citoyen = false
+		 new_doc.voters = new Array()
+		 new_doc.doc_options = new Array()
+		 var text_size = _.size(raw_content)-1;
+		 var voter_name  = 'senateur_name_'+Math.random()
+		 var include_senateur = false
+		 var include_depute = false
+		 var include_citoyen = false
 
 
-	if(req.body.inc_depute && req.body.inc_depute == 'false' && req.body.inc_senateur && req.body.inc_senateur == 'false' ){
-		// console.log('false')
-			var doc = new Vote(new_doc);
-			doc.user = user;
-		   	doc.username =user.username;
-		   	doc.include_citoyen = true
-				
-			//doc.populate('user', 'name username image_url').exec(function(err,doc) {
+		if(req.body.inc_depute && req.body.inc_depute == 'false' && req.body.inc_senateur && req.body.inc_senateur == 'false' ){
+			// console.log('false')
+				var doc = new Vote(new_doc);
+				doc.user = user;
+			   	doc.username =user.username;
+			   	doc.include_citoyen = true
+				//doc.populate('user', 'name username image_url').exec(function(err,doc) {
 				doc.save(function(err,doc) {
 					if (err) {
 			   			res.json(err);
 			        } else {
 						console.log('vote created')
 						// var doc =  Vote.findOne({title: filtered_title}).populate('user', '-salt name username image_url').populate('room').exec(function(err, doc) {
-			        	res.json(doc)
-			   			          
+			        	res.json(doc)				   			      
 			        }
 			    });
-	}
+		}
+		else{
+				var client = request.createClient(nconf.get('ROOT_URL')+':'+nconf.get('PORT'));
+				var file = '';
+				if(req.body.inc_depute == 'true'){
+					file = 'dumps/nosdeputes.fr_deputes_en_mandat2015-06-04.json'
+				}
+				if(req.body.inc_senateur == 'true'){
+					file = 'dumps/nossenateurs.fr_senateurs_en_mandat2015-06-04.json'
+				}
+				console.log(file)
 
-
-
-
-
-
-	else{
-			var client = request.createClient(nconf.get('ROOT_URL')+':'+nconf.get('PORT'));
-			
-
-			var file = '';
-			if(req.body.inc_depute == 'true'){
-				file = 'dumps/nosdeputes.fr_deputes_en_mandat2015-06-04.json'
-			}
-			if(req.body.inc_senateur == 'true'){
-				file = 'dumps/nossenateurs.fr_senateurs_en_mandat2015-06-04.json'
-			}
-			console.log(file)
-
-			client.get(file, function(err, res__, body) {
-			
+				client.get(file, function(err, res__, body) {
 				
-			if(req.body.inc_depute== 'true')	{
-				var objs = body.deputes
-			}
-			if(req.body.inc_senateur== 'true')	{	
-				var objs = body.senateurs
-			}
-
-			  _.each(objs, function(obj, i){
-			  //	console.log(body.deputes[i])
-
-			var pos_preset = 'Inconnue'
-			var type = ''
-			
-
-			if(req.body.inc_citoyen && req.body.inc_citoyen == 'true')	{
-				new_doc.include_citoyen = true
-			}
-
-			if(req.body.inc_depute && req.body.inc_depute == 'true')	{
-				var depute = objs[i].depute
-				type = 'depute'
-				new_doc.include_depute = true
-			}
-			if(req.body.inc_senateur && req.body.inc_senateur == 'true')	{
-				
-				var depute = objs[i].senateur
-				type = 'senateur'
-				new_doc.include_senateur = true
-
-			}
-
-
-				_.each(groupslist, function(group){
-					var req_body = req.body
-					var req_body_sigle = req_body[group]
 					
-					if(req_body_sigle && depute.groupe_sigle == group){
+					if(req.body.inc_depute== 'true')	{
+						var objs = body.deputes
+					}
+					if(req.body.inc_senateur== 'true')	{	
+						var objs = body.senateurs
+					}
+
+					_.each(objs, function(obj, i){
+					  //	console.log(body.deputes[i])
+						var pos_preset = 'Inconnue'
+						var type = ''
 						
-						 pos_preset = ''+req_body_sigle
-			  		}
-				})
+						if(req.body.inc_citoyen && req.body.inc_citoyen == 'true')	{
+							new_doc.include_citoyen = true
+						}
 
+						if(req.body.inc_depute && req.body.inc_depute == 'true')	{
+							var depute = objs[i].depute
+							type = 'depute'
+							new_doc.include_depute = true
+						}
+						if(req.body.inc_senateur && req.body.inc_senateur == 'true')	{
+							var depute = objs[i].senateur
+							type = 'senateur'
+							new_doc.include_senateur = true
 
+						}
 
+						_.each(groupslist, function(group){
+							var req_body = req.body
+							var req_body_sigle = req_body[group]
+							if(req_body_sigle && depute.groupe_sigle == group){
+							 pos_preset = ''+req_body_sigle
+					  		}
+						})
 
-			  	var twitter_account = '';
-			  	if(depute.twitter !==""){
-			  		 twitter_account = depute.twitter
-			  	}
-		
-
-			  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':depute.place_en_hemicycle,'nom_circo': depute.nom_circo,'subgroup':depute.parti_ratt_financier, 'group':depute.groupe_sigle, 'twitter_account': twitter_account, 'username':user.username, 'slug': depute.slug ,'name': depute.nom, 'type': type, 'position':pos_preset} )
-				new_doc.voters.push(voter_b)
+					  	var twitter_account = '';
+					  	if(depute.twitter !==""){
+					  		 twitter_account = depute.twitter
+					  	}
 				
-			  		
-			  })
 
-				// var voter_citoyen  = new Voter( {'user_id':user._id, 'place_en_hemicycle':0,'nom_circo':'www','subgroup':'www', 'group':'www', 'twitter_account': '-', 'username':user.username, 'name': user.username,'type': 'citoyen', 'position':'inconnue'} )
-				// new_doc.voters.push(voter_citoyen)
+					  	var voter_b  = new Voter( {'user_id':user._id, 'place_en_hemicycle':depute.place_en_hemicycle,'nom_circo': depute.nom_circo,'subgroup':depute.parti_ratt_financier, 'group':depute.groupe_sigle, 'twitter_account': twitter_account, 'username':user.username, 'slug': depute.slug ,'name': depute.nom, 'type': type, 'position':pos_preset} )
+						new_doc.voters.push(voter_b)
+					})
 
+					var doc = new Vote(new_doc);
+					doc.user = user;
+				   	doc.username =user.username;
+						
+					//doc.populate('user', 'name username image_url').exec(function(err,doc) {
+						doc.save(function(err,doc) {
+							if (err) {
+					   			res.json(err);
+					        } else {
+								console.log('vote created')
+								// var doc =  Vote.findOne({title: filtered_title}).populate('user', '-salt name username image_url').populate('room').exec(function(err, doc) {
+					        	res.json(doc)
+					   			          
+					        }
+					    });
 
+				}); // get end.
 
-			var doc = new Vote(new_doc);
-			doc.user = user;
-		   	doc.username =user.username;
-				
-			//doc.populate('user', 'name username image_url').exec(function(err,doc) {
-				doc.save(function(err,doc) {
-					if (err) {
-			   			res.json(err);
-			        } else {
-						console.log('vote created')
-						// var doc =  Vote.findOne({title: filtered_title}).populate('user', '-salt name username image_url').populate('room').exec(function(err, doc) {
-			        	res.json(doc)
-			   			          
-			        }
-			    });
-
-
-
-			}); // get end.
-
-	}
-
-
-	
-
-
+		}
    // save user old });
-
-
 }
