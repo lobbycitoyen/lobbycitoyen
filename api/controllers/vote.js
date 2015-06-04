@@ -41,7 +41,7 @@ nconf.argv().env().file({file:'config.json'});
 var chalk = require('chalk');
 var app;
 
-				var groupslist = new Array('LES-REP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
+				var groupslist = new Array('LES-REP','SRC','RDSE','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI')
 
 
 //var mail= require('./../../sendmail.js');

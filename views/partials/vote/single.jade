@@ -54,9 +54,6 @@ div(id="fb-root")
 							a(ng-href="#{root_url}:#{port}/me/account") {{render_config.i18n.CUSTOM.USER.myprofile}}
 
 							
-
-
-
 		ol.breadcrumb
 			li 
 				a(href="/#!") Accueil
@@ -81,7 +78,7 @@ div(id="fb-root")
 			div.jumbotron
 				
 			
-				h4 vote prévu {{vote.closetime_moment}}, le {{vote.closetime}}
+				h4 vote prévu dans {{vote.closetime_moment}}
 				a(ng-if="is_owner" ng-click="editor_('closetime')") edit closetime
 				div(ng-if="ui.editor['closetime'] == true")
 					textarea(ng-model="vote.closetime")

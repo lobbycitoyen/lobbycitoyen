@@ -30,7 +30,7 @@ function UserProfileCtrl($scope, $http , $location, $routeParams,  $locale, Vote
       $scope.preset_vote.inc_senateur            = 'false';
       $scope.preset_vote.inc_citoyen             = 'false';
       $scope.preset_vote.opt                     = ['Pour','Contre','Abstention','Inconnue']
-      $scope.preset_vote.s                       = ['LES-REP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI']
+      $scope.preset_vote.s                       = ['LES-REP','RDSE' ,'SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI']
       $scope.ui                                  = {}
       $scope.ui.sockets_refresh                  = false
       $scope.ui.ready                            = false;

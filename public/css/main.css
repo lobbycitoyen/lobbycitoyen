@@ -8,7 +8,7 @@ ul{margin:0; padding:0;}
     margin-bottom: 2%;
     margin-left: 0.5%;
     margin-right: 0.5%;
-    min-height: 290px;
+    min-height: 324px;
     padding: 6px;
     width: 18%;
 }
@@ -16,7 +16,7 @@ ul{margin:0; padding:0;}
  .voter.group_LES-REP{
  	border-top:4px solid #4aa3df;
  }
-  .voter.group_SRC,   .voter.group_SOC{
+  .voter.group_SRC,   .voter.group_SOC,   .voter.group_RDSE{
  	border-top:4px solid #c93c72;
  }
 

@@ -46,7 +46,7 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		$scope.render_config = new Object()
       	$scope.render_config.i18n =  $locale;
       	$scope.i18n                       = $locale;
-      	$scope.groupslist = ['LES-REP','SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI']
+      	$scope.groupslist = ['LES-REP','RDSE' ,'SRC','SOC','SOCV','UDI','CRC','CRC-SPG','ECO','UC','NI']
       	$scope.typeslist = ['senateur', 'depute','citoyen']
 
 
