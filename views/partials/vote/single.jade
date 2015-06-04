@@ -1,29 +1,32 @@
+div(id="fb-root")
 .container-fluid(ng-hide="ui.ready == true")
 			p.alert.alert-success Chargement...
 
 .container-fluid(ng-if="ui.ready")
-
-	div(ng-if="ui.iswidget")
+	
+	
+	div.iswidget(class="widget-{{ui.widgettype}}" ng-if="ui.iswidget")
 		div(ng-if="ui.widgettype=='groups'")
 			
-				
+			h1 {{vote.title}}
+			h4(ng-bind-html="vote.excerpt") 
+
+			
+			a(href="https://twitter.com/share" class="twitter-share-button" data-url="#{root_url}:#{port}/vote/{{vote.slug}}" data-text="mobilisation sur le vote {{vote.title}}" data-via="tom_plays") Partager sur Twitter
+			div(class="fb-share-button" data-href="#{root_url}:#{port}/vote/{{vote.slug}}" data-layout="button_count") share
 			div.chartall
 				div.charttotal
 					h3 Répartition total ({{ui.count.all_senateurs.total}} sénateurs) 
 					div
 						pie-chart(data="data_all" options="options")
 			
-				div.chartgroup
+				div.chartsgroup
 					h3 Répartition par groupe parlementaire:
-					div.group(ng-repeat="group in groupslist track by $index" ng-if="data[group]") 
-					
-						div
-							pie-chart(data="data[group]" options="options")
+					div.group.chartgroup(class="group_{{$index}}" ng-repeat="group in groupslist track by $index" ng-if="data[group]") 
 						h4 Groupe {{group}}
-
-				div.widget_footer
-					p Lobbycitoyen.fr
-				
+						div
+							pie-chart(data="data[group]" options="options_small")
+						
 	
 
 	div(ng-hide="ui.iswidget")
@@ -227,7 +230,7 @@
 					p.name {{voter.name}}  
 						
 					p(ng-if="voter.twitter_account")
-						a(href="https://twitter.com/intent/tweet?text=Mobilisation citoyenne à propos du vote {{vote.title}} @{{voter.twitter_account}} http://lobbycitoyen.fr/vote/{{vote.slug}}") Interpeller sur Twitter @ {{voter.twitter_account}} 
+						a(href="https://twitter.com/intent/tweet?hashtags=Senat&text=Mobilisation citoyenne à propos du vote {{vote.title}} @{{voter.twitter_account}} http://lobbycitoyen.fr/vote/{{vote.slug}}") Interpeller @{{voter.twitter_account}} sur Twitter 
 
 					h3	position: {{voter.position}}
 					p	circonscription: {{voter.nom_circo}}
@@ -242,9 +245,11 @@
 						p changer vote : 
 						ul(ng-repeat="p in ui.positions_available" )
 							li 
-								a(ng-click="edit('voter', voter._id, p)" )  {{p}}
+								a(ng-click="edit('voter', voter, p)" )  {{p}}
 
 
-		footer
-				a(href="/") Home >
+footer
+	a(href="http://lobbycitoyen.fr") 
+		span(ng-if="ui.iswidget") un widget   
+		span lobbycitoyen.fr
 			

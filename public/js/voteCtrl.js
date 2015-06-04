@@ -57,7 +57,7 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		
 		$scope.ui.positions_available = ['Pour', 'Contre', 'Abstention']
 
-		$scope.edit = function(type, id, value){
+		$scope.edit = function(type, voter, value){
 
 			if(!$scope.user_logged){
 				// api will recheck logged user but frontend redirects too.
@@ -66,21 +66,30 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 			}
 			var data = {}
 			var idv = $scope.vote._id;
-			var promise = VoteRest.vote_edit({Id:idv},{ 'type': type, 'id':id, 'value':value }).$promise;
+		
+
+			var promise = VoteRest.vote_edit({Id:idv},{ 'type': type, 'id':voter._id, 'value':value }).$promise;
    				 promise.then(function (Result) {
 			       if(Result){
+voter.position = value
+			      /*
 			          $scope.vote = Result.vote
 			          socket.emit('docupdate',Result.vote)
 			          console.log(Result.vote)
 			          $scope.is_owner = Result.is_owner
 					  $scope.user_logged = Result.userin
 			          $scope.apply_filters()
+
+			      */
+
 			         
 					}
 			}.bind(this));
 		    promise.catch(function (response) {     
 		      console.log(response);
 		    }.bind(this));
+
+
 		}
 		$scope.editor_= function(field){
 			if($scope.ui.editor[field] && $scope.ui.editor[field] == true){
@@ -97,10 +106,12 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 					 $scope.vote.updated_moment = 'Mis à jour il y a ' +moment($scope.vote.updated).fromNow(); // 4 years ago()
 					 $scope.vote.closetime_moment = '' +moment($scope.vote.closetime).fromNow(); // 4 years ago()
 
-					    $scope.byposition = $scope.vote.byposition
+if($scope.vote.byposition && $scope.vote.bypositionbygroup){
+	 $scope.byposition = $scope.vote.byposition
 					    $scope.bypositionbygroup = $scope.vote.bypositionbygroup
 
-						$scope.options = {thickness: 100};
+						$scope.options = {thickness: 70};
+						$scope.options_small = {thickness: 30};
 
 
 						$scope.colors = {}
@@ -109,9 +120,9 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 						$scope.colors.Abstention= 'orange'
 						$scope.colors.Inconnue= 'grey'
 
-					$scope.data = []
-					var data_all = []
-					var data = []
+						$scope.data = []
+						var data_all = []
+						var data = []
 
 
 					
@@ -145,12 +156,6 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 					$scope.data_all = data_all
 					$scope.data = data
 
-
-  
-  
-
-
-
 					_.each($scope.vote.voters, function(v,i){
 			          			v.visible = true;
 			          			v.byme = false;
@@ -160,6 +165,8 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 
 			          			}
 			          })
+}
+					   
 					 var counts = {}
 
 					counts.current = $scope.vote.voters.length
@@ -197,13 +204,26 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		}
 
 		$scope.init = function(){
+
+
+
+
+
 				
 			    var promise = VoteRest.get({Id:$routeParams.docid},{  }).$promise;
    				promise.then(function (Result) {
 			     	if(Result){
 			         
 			     	
-					
+					!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+					(function(d, s, id) {
+							var js, fjs = d.getElementsByTagName(s)[0];
+							if (d.getElementById(id)) return;
+							js = d.createElement(s); js.id = id;
+							js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=218040021551185";
+							fjs.parentNode.insertBefore(js, fjs);
+							}(document, 'script', 'facebook-jssdk'))
+
 
 				        $scope.vote = Result.vote
 				        $scope.is_owner = Result.is_owner
@@ -259,7 +279,7 @@ function VoteCtrl($scope, $http , $sce, $location, $routeParams, $locale, $timeo
 		console.log(data);
 		if(data.slug == $scope.vote.slug && $scope.ui.sockets_refresh == true){
 			
-			alert('refresh page..')
+			//alert('refresh page..')
 			/*
 			$scope.vote.voters = data.voters;
 			$scope.vote.updated = data.updated
